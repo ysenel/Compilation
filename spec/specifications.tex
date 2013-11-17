@@ -1,0 +1,72 @@
+\documentclass[10pt,a4paper,final]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\author{dorian cheminade // yasin senel}
+\title{secifications}
+\begin{document}
+\tableofcontents
+
+\paragraph{Comments}
+\begin{itemize}
+\item[*--*]one line comments: \_\_COMMENT\_\_ <your short comment here>
+\item[*--*]several lines comments: \_\_COMMENT\_\_( <start of your long comment here>\\<end of your long comment here )
+\end{itemize}
+
+\paragraph{Types Simples}
+\begin{itemize}
+\item[*--*]signed integer using 1 byte (-128..127): Integer <name> ;
+\item[*--*]signed integer using 2 bytes (-32768..32767): BigInteger <name> ;
+\item[*--*]unsigned integer using 1 byte (0..255): UnsignedInteger <name> ;
+\item[*--*]unsigned integer using 2 bytes (0..65535): UnsignedBigInteger <name> ;
+\item[*--*]boolean: Boolean <name> ;
+\item[*--*]character (on 4 bytes): Character <name> ;
+\item[*--*]real number ($1.5*10^{-45}..3.4*10^{38}$): Real <name> ;
+\item[*--*]enumeration (using 1 bytes, no more than 255 differents elements 
+	\\declaration: Enumeration <enumname> = (<elements1>,<elements2>,...,<elementn>);
+	
+\end{itemize}
+
+\paragraph{Complex Types}
+\begin{itemize}
+\item[*--*]intervals (enum items or integer)  [<begining> .. <end>]
+\item[*--*]string (of (1..65535) characters)): String <name> ;
+\item[*--*]array: <type> <name>[<indice>]
+\item[*--*]pointer: 
+	\\declaration: <type> <name> -> <var>
+	\\get the address: name
+	\\get the content: name->
+\end{itemize}
+
+\paragraph{loops}
+\begin{itemize}
+\item[*--*]switch:
+	\\SWITCH
+	CASE <condition_1>
+		<instructions>
+	...
+	CASE <condition_n>
+		<instructions>
+	END_SWITCH
+\item[*--*]while:
+	\\WHILE <condition> DO
+		<instructions>
+	OD
+
+\end{itemize}
+
+\paragraph{block}
+\begin{itemize}
+\item[*--*]TODO: decide the effect of blocks onto variables
+\item[*--*]a portion of code can be enclosed in a block explicitely using "{" and "}"
+	ex: { <your instructions here> }
+\item[*--*]instructions of switch and while areconsidered enclosed in blocks
+\end{itemize}
+
+
+
+\end{document}

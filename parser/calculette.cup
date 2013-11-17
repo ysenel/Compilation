@@ -1,0 +1,181 @@
+// CUP specification for a simple expression evaluator (w/ actions)
+
+import java_cup.runtime.*;
+import java.lang.Number;
+import java.util.Vector;
+import java.io.*;
+
+parser code {:
+
+public void syntax_error(String message, Object o, int line, int column){
+	String msg2 = new StringBuilder().append("ligne : ").append(line+1).append(",").append(column)
+					.append(",\t erreur : ").append(message)
+					.append("\n\t-> symbole : ").append(o).toString();
+	report_error(msg2, null) ;
+}
+public void syntax_error(String message, Object o){
+	String msg2 = new StringBuilder().append("objet : ").append(o).append(" ->\t ").append(message).toString();
+	report_error(msg2, null) ;
+}
+public void unrecovered_syntax_error(Symbol cur_token, String message){
+	try{
+		report_fatal_error(message, null) ;
+	}catch (Exception e){
+		
+	}
+}
+public void unrecovered_syntax_error(Symbol cur_token){
+	try{
+		report_fatal_error("Erreur fatale", null) ;
+	}catch (Exception e){
+		
+	}
+}
+
+:}
+
+
+terminal LPAR, RPAR, PLUS, MINUS, TIMES, DIVIDE, MINUS_U;
+terminal NOT, AND, OR, IMPLY, EQUI;
+terminal EQUAL, EQUAL_NOT, EQUAL_INF, EQUAL_SUP, INF, SUP;
+terminal SEMIC;
+terminal boolean T, F;
+terminal Float NUMBER;
+non terminal statements, statement;
+non terminal Float expr;
+non terminal Boolean prop;
+
+precedence left PLUS, MINUS, IMPLY, EQUI, EQUAL, EQUAL_NOT, EQUAL_INF, EQUAL_SUP, SUP, INF;
+precedence left TIMES, DIVIDE, AND, OR;
+precedence left MINUS_U, NOT;
+
+//old start (calculator)
+//start with statements;
+
+//=======================================================
+// variables
+//=======================================================
+
+VARIABLE ::= 
+	TYPE NAME EQ VAL SEMIC
+	|TYPE NAME SEMIC
+	|NAME1 EQ NAME2 SEMIC
+	|TYPE NAME1 EQ NAME2 SEMIC
+	;
+
+TYPE ::=
+//simples
+	SIGNED_SMALL_INTEGER
+	|SIGNED_BIG_INTEGER
+	|UNSIGNED_SMALL_INTEGER
+	|UNSIGNED_BIG_INTEGER
+	|BOOLEAN
+	|CHARACTER
+	|REAL
+	|ENUMERATION
+//complex
+	|INTERVAL
+	|STRING
+	|ARRAY
+	|POINTER
+	;
+
+//=======================================================
+// loops and blocks
+//=======================================================
+
+LOOPS ::=
+	SWITCH CASES END_SWITCH
+	|WHILE COND DO INSTRUCTIONS OD
+	;
+CASES ::=
+	CASES
+	CASE lbrac COND rbrac INSTRUCTIONS ESAC
+	|CASE lbrac COND rbrac INSTRUCTIONS ESAC
+	;
+
+BLOCK ::=
+	lbrac INSTRUCTIONS rbrac
+	;
+
+//=======================================================
+// logic and arithmetic 
+//=======================================================
+
+statements ::= 
+	statements statement
+	|statement;
+
+statement ::=
+	expr:e SEMIC 
+		{: System.out.println(e); :}
+	|prop:p SEMIC
+		{: System.out.println("statement is " + p); :}
+	|error:e SEMIC
+		{: parser.syntax_error("expression incorrecte", e,  eleft, eright ); :}
+	;
+
+expr ::=
+        expr:e1 PLUS:p expr:e2 
+		{: RESULT = e1 + e2; :}    
+	|expr:e1 MINUS expr:e2 
+		{: RESULT = e1 - e2; :}    
+        |expr:e1 TIMES expr:e2 
+		{: RESULT = e1 * e2; :}    
+        |expr:e1 DIVIDE expr:e2 
+		{: RESULT = e1 / e2; :}    
+        |LPAR expr:e RPAR 
+		{: RESULT = e; :}	
+
+        |MINUS expr:e 
+		{: RESULT = -e; :} %prec MINUS_U 
+
+	|NUMBER:n 
+		{: RESULT = n; :}
+        ;
+
+prop ::=
+	prop:p1 AND prop:p2
+		{: RESULT = LogicRules.and(p1, p2); :}
+	|prop:p1 OR prop:p2
+		{: RESULT = LogicRules.or(p1, p2); :}
+	|prop:p1 IMPLY prop:p2
+		{: RESULT = LogicRules.imply(p1, p2); :}
+	|prop:p1 EQUI prop:p2
+		{: RESULT = LogicRules.equi(p1, p2); :}
+
+	|prop:p1 EQUAL prop:p2
+		{: RESULT = LogicRules.equal(p1, p2); :}
+	|expr:e1 EQUAL expr:e2
+		{: RESULT = LogicRules.equal(e1, e2); :}
+	|prop:p1 EQUAL_NOT prop:p2
+		{: RESULT = !LogicRules.equal(p1, p2); :}
+	|expr:e1 EQUAL_NOT expr:e2
+		{: RESULT = !LogicRules.equal(e1, e2); :}
+	|prop:p1 SUP prop:p2
+		{: RESULT = LogicRules.sup(p1, p2); :}
+	|expr:e1 SUP expr:e2
+		{: RESULT = LogicRules.sup(e1, e2); :}
+	|prop:p1 INF prop:p2
+		{: RESULT = LogicRules.sup(p2, p1); :}
+	|expr:e1 INF expr:e2
+		{: RESULT = LogicRules.sup(e2, e1); :}
+	|prop:p1 EQUAL_SUP prop:p2
+		{: RESULT = (LogicRules.equal(p1, p2) | LogicRules.sup(p1, p2)); :}
+	|expr:e1 EQUAL_SUP expr:e2
+		{: RESULT = (LogicRules.equal(e1, e2) | LogicRules.sup(e1, e2)); :}
+	|prop:p1 EQUAL_INF prop:p2
+		{: RESULT = (LogicRules.equal(p1, p2) | LogicRules.sup(p2, p1)); :}
+	|expr:e1 EQUAL_INF expr:e2
+		{: RESULT = (LogicRules.equal(e1, e2) | LogicRules.sup(e2, e1)); :}
+ 
+        |LPAR prop:p RPAR 
+		{: RESULT = p; :}
+	|NOT prop:p
+		{: RESULT = !p; :}
+	|T
+		{: RESULT = false; :}
+	|F
+		{: RESULT = true; :}
+	;
+
