@@ -36,55 +36,64 @@ public void unrecovered_syntax_error(Symbol cur_token){
 
 
 terminal LPAR, RPAR, PLUS, MINUS, TIMES, DIVIDE, MINUS_U;
-terminal NOT, AND, OR, IMPLY, EQUI;
-terminal EQUAL, EQUAL_NOT, EQUAL_INF, EQUAL_SUP, INF, SUP;
+terminal NOT, AND, OR;
+terminal EQ, EQUAL, EQUAL_NOT, EQUAL_INF, EQUAL_SUP, INF, SUP;
 terminal SEMIC;
-terminal boolean T, F;
-terminal Float NUMBER;
-non terminal statements, statement;
+terminal LBRACKET, RBRACKET, DOTDOT, COMA, QUOTE, LBRACE, RBRACE;
+terminal INTEGER, BIGINTEGER, UINTEGER, UBIGINTEGER, BOOL, CHAR, REAL, ENUM;
+terminal ARROW, STRING;
+terminal SWITCH, CASE, WHILE, DO, OD, END_SWITCH;
+terminal TRUE, FALSE ;
+terminal NUMBER, STRINGCONTENT;
+non terminal statements, statement, TYPE, VAL, VARIABLE, BEGIN;
 non terminal Float expr;
 non terminal Boolean prop;
 
-precedence left PLUS, MINUS, IMPLY, EQUI, EQUAL, EQUAL_NOT, EQUAL_INF, EQUAL_SUP, SUP, INF;
+precedence left PLUS, MINUS, EQUAL, EQUAL_NOT, EQUAL_INF, EQUAL_SUP, SUP, INF;
 precedence left TIMES, DIVIDE, AND, OR;
 precedence left MINUS_U, NOT;
 
 //old start (calculator)
-//start with statements;
+start with BEGIN;
+
+BEGIN ::=
+	VARIABLE BEGIN
+	|
+	;
 
 //=======================================================
 // variables
 //=======================================================
 
 VARIABLE ::= 
-	TYPE NAME EQ VAL SEMIC
-	|TYPE NAME SEMIC
-	|NAME1 EQ NAME2 SEMIC
-	|TYPE NAME1 EQ NAME2 SEMIC
+	TYPE STRINGCONTENT EQ VAL SEMIC
+	|TYPE STRINGCONTENT SEMIC
+	|STRINGCONTENT EQ STRINGCONTENT SEMIC
+	;
+VAL ::=
+	NUMBER
+	|STRINGCONTENT
 	;
 
 TYPE ::=
 //simples
-	SIGNED_SMALL_INTEGER
-	|SIGNED_BIG_INTEGER
-	|UNSIGNED_SMALL_INTEGER
-	|UNSIGNED_BIG_INTEGER
-	|BOOLEAN
-	|CHARACTER
+	INTEGER
+	|BIGINTEGER
+	|UINTEGER
+	|UBIGINTEGER
+	|BOOL
+	|CHAR
 	|REAL
-	|ENUMERATION
+	|ENUM
 //complex
-	|INTERVAL
 	|STRING
-	|ARRAY
-	|POINTER
 	;
 
 //=======================================================
 // loops and blocks
 //=======================================================
 
-LOOPS ::=
+/*LOOPS ::=
 	SWITCH CASES END_SWITCH
 	|WHILE COND DO INSTRUCTIONS OD
 	;
@@ -96,13 +105,13 @@ CASES ::=
 
 BLOCK ::=
 	lbrac INSTRUCTIONS rbrac
-	;
+	;*/
 
 //=======================================================
 // logic and arithmetic 
 //=======================================================
 
-statements ::= 
+/*statements ::= 
 	statements statement
 	|statement;
 
@@ -177,5 +186,5 @@ prop ::=
 		{: RESULT = false; :}
 	|F
 		{: RESULT = true; :}
-	;
+	;*/
 

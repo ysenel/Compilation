@@ -1,0 +1,5 @@
+Integer i;
+Integer j;
+BigInteger t = 0;
+BigInteger k;
+k = t;
