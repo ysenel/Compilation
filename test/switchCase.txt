@@ -1,0 +1,20 @@
+SWITCH 
+	CASE(n>o)
+		Integer n;
+		Integer i;
+		BigInteger t = 0;
+		WHILE(n>l)
+			DO
+				Integer n;
+				Integer x;
+				SWITCH 
+					CASE(n>o)
+						Integer n;
+						Integer i;
+						BigInteger t = 0;
+				END_SWITCH
+			OD
+	CASE(n>=t)
+		BigInteger x;
+		Real a;
+END_SWITCH

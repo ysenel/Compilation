@@ -45,7 +45,7 @@ terminal ARROW, STRING;
 terminal SWITCH, CASE, WHILE, DO, OD, END_SWITCH;
 terminal TRUE, FALSE ;
 terminal NUMBER, STRINGCONTENT;
-non terminal statements, statement, TYPE, VAL, VARIABLE, BEGIN;
+non terminal type, val, variable, begin, enumeration, intervals, array, instructions, switchCase, loop, case;
 non terminal Float expr;
 non terminal Boolean prop;
 
@@ -54,10 +54,12 @@ precedence left TIMES, DIVIDE, AND, OR;
 precedence left MINUS_U, NOT;
 
 //old start (calculator)
-start with BEGIN;
+start with begin;
 
-BEGIN ::=
-	VARIABLE BEGIN
+begin ::=
+	variable begin
+	|switchCase begin
+	|loop begin
 	|
 	;
 
@@ -65,17 +67,93 @@ BEGIN ::=
 // variables
 //=======================================================
 
-VARIABLE ::= 
-	TYPE STRINGCONTENT EQ VAL SEMIC
-	|TYPE STRINGCONTENT SEMIC
-	|STRINGCONTENT EQ STRINGCONTENT SEMIC
+
+prop ::=
+	prop AND prop
+	|prop OR prop
+	|prop EQUAL prop
+	|expr EQUAL expr
+	|prop EQUAL_NOT prop
+	|expr EQUAL_NOT expr
+	|expr SUP expr
+	|prop SUP prop
+	|prop INF prop
+	|expr INF expr
+	|prop EQUAL_SUP prop
+	|expr EQUAL_SUP expr
+	|prop EQUAL_INF prop
+	|expr EQUAL_INF expr
+    |LPAR prop RPAR 
+	|NOT prop
+	|TRUE
+	|FALSE
 	;
-VAL ::=
+
+
+expr ::=
+    expr PLUS expr   
+	|expr MINUS expr     
+    |expr TIMES expr     
+    |expr DIVIDE expr 
+    |LPAR expr RPAR
+    |MINUS expr 
+	|val
+    ;
+
+
+variable ::= 
+	type STRINGCONTENT EQ val SEMIC
+	|type STRINGCONTENT SEMIC
+	|STRINGCONTENT EQ STRINGCONTENT SEMIC
+	|type STRINGCONTENT EQ TRUE SEMIC
+	|type STRINGCONTENT EQ FALSE SEMIC
+	|type STRINGCONTENT EQ LPAR enumeration RPAR SEMIC
+	|intervals SEMIC
+	|array SEMIC
+	;
+
+loop ::= 
+	WHILE LPAR prop RPAR DO instructions OD
+	;
+
+instructions ::=
+	variable instructions
+	|switchCase instructions
+	|loop instructions
+	|
+	;
+
+
+switchCase ::= 
+	SWITCH case END_SWITCH
+	;
+
+case ::=
+	CASE LPAR prop RPAR instructions case
+	|
+	;
+
+
+array ::=
+	type STRINGCONTENT LBRACKET NUMBER RBRACKET
+	;
+
+intervals ::=
+	LBRACKET NUMBER DOTDOT NUMBER RBRACKET
+	;
+
+enumeration ::=
+	NUMBER enumeration
+	|COMA enumeration
+	|
+	;
+
+val ::=
 	NUMBER
 	|STRINGCONTENT
 	;
 
-TYPE ::=
+type ::=
 //simples
 	INTEGER
 	|BIGINTEGER
