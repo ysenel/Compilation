@@ -1,0 +1,7 @@
+package org.dm1;
+public enum EnumType {
+	// types simples
+	CHARACTER, INTEGER, UINTEGER, BIGINTEGER, UBIGINTEGER, STRING, BOOLEAN, REAL, 
+	ARROW, ARRAY, ENUM, INTERVALS, 
+	ERROR
+}
