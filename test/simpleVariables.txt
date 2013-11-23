@@ -1,0 +1,26 @@
+Integer i;
+Integer j = 0;
+Integer j = i;
+
+BigInteger t;
+BigInteger k = 0;
+BigInteger j = i;
+
+UnsignedBigInteger t;
+UnsignedBigInteger k = 0;
+UnsignedBigInteger j = i;
+
+UnsignedInteger i;
+UnsignedInteger j = 0;
+UnsignedInteger j = i;
+
+Boolean b;
+Boolean b = T;
+Boolean b = F;
+
+Character c;
+Character c = 'c';
+
+Real r;
+Real x = 0;
+

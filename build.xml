@@ -28,7 +28,7 @@ Lionel
         classpath=".:${BIN}:${LIB}/java-cup-11a-runtime.jar"
 
 	output="Output.txt">
-      <arg value="test/switchCase.txt"/>
+      <arg value="test/simpleVariables.txt"/>
     </java>
     
   </target>
@@ -72,8 +72,8 @@ Lionel
     <cup 
 	srcfile="${PARSER}/parser.cup"
 	destdir="${SRC}"
-	parser="CalculetteParser"
-	symbols="CalculetteSymbol"
+	parser="Parser"
+	symbols="Symbol"
 	expect="0"
 	dump_grammar="false" 
 	dump_states="false" 
