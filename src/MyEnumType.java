@@ -1,0 +1,12 @@
+
+public enum MyEnumType {
+	// types simples
+	CHARACTER, INTEGER, UINTEGER, BIGINTEGER, UBIGINTEGER, STRING, BOOLEAN, REAL, 
+	ARROW, ARRAY, ENUM, INTERVALS, 
+	//arithmetic	
+	PLUS, MINUS, DIVIDE, TIMES, 
+
+	ALLOC,
+
+	ERROR
+}
