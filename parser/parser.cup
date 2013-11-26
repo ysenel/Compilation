@@ -49,8 +49,9 @@ terminal String TRUE, FALSE ;
 terminal String NUMBER, STRINGCONTENT;
 
 non terminal Node begining, begin, variable, val, expr;
-non terminal type, enumeration, intervals, array, instructions, switchCase, loop, case;
+non terminal enumeration, intervals, array, instructions, switchCase, loop, case;
 non terminal Boolean prop;
+non terminal MyEnumType type;
 
 precedence left PLUS, MINUS, EQUAL, EQUAL_NOT, EQUAL_INF, EQUAL_SUP, SUP, INF;
 precedence left TIMES, DIVIDE, AND, OR;
@@ -63,6 +64,7 @@ begining ::=
 		:}
 	begin:b 
 		{:		 
+		
 		parser.tree.setNode(b);
 		System.out.println(parser.tree.TacToString());
 		:}
@@ -109,22 +111,31 @@ expr ::=
 	;
 
 variable ::= 
-	type STRINGCONTENT:var EQ val:val SEMIC
-		{: RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); :}
-	|type STRINGCONTENT:var SEMIC
-		{: RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, null, parser.tree); :}
+	type:t STRINGCONTENT:var EQ val:val SEMIC
+		{: RESULT = new NodeAllocation(var, t, val, parser.tree); :}
+
+	|type:t STRINGCONTENT:var SEMIC
+		{: RESULT = new NodeAllocation(var, t, null, parser.tree); :}
+
 	|STRINGCONTENT:var EQ STRINGCONTENT:val SEMIC
 		//{: RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); :}
+
 	|type STRINGCONTENT:var EQ TRUE:val SEMIC
 		{: NodeConstant t = new NodeConstant(val, MyEnumType.BOOLEAN);
 		RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, t, parser.tree); :}
+
 	|type STRINGCONTENT:var EQ FALSE:val SEMIC
 		{: NodeConstant f = new NodeConstant(val, MyEnumType.BOOLEAN);
 		RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, f, parser.tree); :}
+
 	|type STRINGCONTENT:var EQ LPAR enumeration:val RPAR SEMIC
 		//{: RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); :}
+
 	|intervals SEMIC
+
 	|array SEMIC
+	type STRINGCONTENT EQ 
+
 	;
 
 loop ::= 
@@ -169,13 +180,13 @@ val ::=
 	;
 
 type ::=
-	INTEGER:i		{: RESULT = new NodeConstant(i.toString(), MyEnumType.INTEGER); :}
-	|BIGINTEGER:i		{: RESULT = new NodeConstant(i.toString(), MyEnumType.BIGINTEGER); :}
-	|UINTEGER:i		{: RESULT = new NodeConstant(i.toString(), MyEnumType.UINTEGER); :}
-	|UBIGINTEGER:i		{: RESULT = new NodeConstant(i.toString(), MyEnumType.UBIGINTEGER); :}
-	|BOOL:b		{: RESULT = new NodeConstant(b.toString(), MyEnumType.BOOLEAN); :}
-	|CHAR:c		{: RESULT = new NodeConstant(c.toString(), MyEnumType.CHARACTER); :}
-	|REAL:r		{: RESULT = new NodeConstant(r.toString(), MyEnumType.REAL); :}
-	|ENUM:e		{: RESULT = new NodeConstant(e.toString(), MyEnumType.ENUM); :}
-	|STRING:s		{: RESULT = new NodeConstant(s.toString(), MyEnumType.STRING); :}
+	INTEGER		{: RESULT = MyEnumType.INTEGER; :}
+	|BIGINTEGER		{: RESULT = MyEnumType.BIGINTEGER; :}
+	|UINTEGER		{: RESULT = MyEnumType.UINTEGER; :}
+	|UBIGINTEGER		{: RESULT = MyEnumType.UBIGINTEGER; :}
+	|BOOL		{: RESULT = MyEnumType.BOOLEAN; :}
+	|CHAR		{: RESULT = MyEnumType.CHARACTER; :}
+	|REAL		{: RESULT = MyEnumType.REAL; :}
+	|ENUM		{: RESULT = MyEnumType.ENUM; :}
+	|STRING		{: RESULT = MyEnumType.STRING; :}
 	;

@@ -73,7 +73,7 @@ Lionel
 	srcfile="${PARSER}/parser.cup"
 	destdir="${SRC}"
 	parser="Parser"
-	symbols="Symbol"
+	symbols="MySymbol"
 	expect="0"
 	dump_grammar="false" 
 	dump_states="false" 
