@@ -43,8 +43,8 @@ Strings = [a-zA-Z]+
 ">="	{ return new Symbol(MySymbol.EQUAL_SUP, yyline, yycolumn); }
 ">"	{ return new Symbol(MySymbol.SUP, yyline, yycolumn); }
 "<"	{ return new Symbol(MySymbol.INF, yyline, yycolumn); }
-"T"	{ return new Symbol(MySymbol.TRUE, yyline, yycolumn); }
-"F"	{ return new Symbol(MySymbol.FALSE, yyline, yycolumn); }
+"T"	{ return new Symbol(MySymbol.TRUE, yyline, yycolumn, new String(yytext())); }
+"F"	{ return new Symbol(MySymbol.FALSE, yyline, yycolumn, new String(yytext())); }
 
 // Symbol
 "[" { return new Symbol(MySymbol.LBRACKET, yyline, yycolumn); }
@@ -86,10 +86,10 @@ Strings = [a-zA-Z]+
 /* -------------------------------------------------
         Nombres
    ------------------------------------------------- */
-{Number}     { return new Symbol(MySymbol.NUMBER, yyline, yycolumn, new Float(yytext())); }
+{Number}     { return new Symbol(MySymbol.NUMBER, yyline, yycolumn, new String(yytext())); }
 
 //strings
-{Strings} { return new Symbol(MySymbol.STRINGCONTENT, yyline, yycolumn); }
+{Strings} { return new Symbol(MySymbol.STRINGCONTENT, yyline, yycolumn, new String(yytext())); }
 
 
 /* -------------------------------------------------

@@ -1,1 +1,8 @@
-Integer i = 3 + 4 + 5;
+Integer a = 9;
+BigInteger b = 10;
+Integer c;
+Integer d = a;
+Boolean e = T;
+Boolean f = F;
+
+Integer g = 1+1;

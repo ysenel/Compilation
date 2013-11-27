@@ -45,10 +45,14 @@ terminal LBRACKET, RBRACKET, DOTDOT, COMA, QUOTE, LBRACE, RBRACE;
 terminal INTEGER, BIGINTEGER, UINTEGER, UBIGINTEGER, BOOL, CHAR, REAL, ENUM;
 terminal ARROW, STRING;
 terminal SWITCH, CASE, WHILE, DO, OD, END_SWITCH;
-terminal String TRUE, FALSE ;
-terminal String NUMBER, STRINGCONTENT;
+terminal String TRUE;
+terminal String FALSE ;
+terminal String NUMBER;
+terminal String STRINGCONTENT;
 
-non terminal Node begining, begin, variable, val, expr;
+non terminal Node begin, variable, expr;
+non terminal Tree begining;
+non terminal String val;
 non terminal enumeration, intervals, array, instructions, switchCase, loop, case;
 non terminal Boolean prop;
 non terminal MyEnumType type;
@@ -60,19 +64,18 @@ precedence left MINUS_U, NOT;
 start with begining;
 
 begining ::=
-		{:	
-		:}
 	begin:b 
-		{:		 
-		
+		{:
 		parser.tree.setNode(b);
 		System.out.println(parser.tree.TacToString());
-		:}
+				:}
 	;
 
 begin ::=
 	variable:var begin:b
-		{: RESULT = new NodeInstruction(var, b); :}
+		{: RESULT = var;
+			//RESULT = new NodeInstruction(var, b);
+			 :}
 	|switchCase begin
 	|loop begin
 	|
@@ -100,41 +103,72 @@ prop ::=
 	;
 
 expr ::=
-	expr:e1 PLUS expr:e2		{: RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2, parser.tree); :}
-	|expr:e1 MINUS expr:e2		{: RESULT = new NodeArithmetic(MyEnumType.MINUS, e1, e2, parser.tree); :} 
-	|expr:e1 TIMES expr:e2		{: RESULT = new NodeArithmetic(MyEnumType.TIMES, e1, e2, parser.tree); :} 
-	|expr:e1 DIVIDE expr:e2		{: RESULT = new NodeArithmetic(MyEnumType.DIVIDE, e1, e2, parser.tree); :} 
-	|LPAR expr:e RPAR		{: RESULT = e; :}
-	|MINUS expr:e		{: NodeConstant moins1 = new NodeConstant("-1", MyEnumType.INTEGER);
-				RESULT = new NodeArithmetic(MyEnumType.TIMES, e, moins1, parser.tree); :} 
-	|val:v		{: RESULT = v; :}
+	expr:e1 PLUS expr:e2		{: //RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2, parser.tree);
+	 :}
+	/*|expr:e1 MINUS expr:e2		{: //RESULT = new NodeArithmetic(MyEnumType.MINUS, e1, e2, parser.tree); :} 
+	|expr:e1 TIMES expr:e2		{: //RESULT = new NodeArithmetic(MyEnumType.TIMES, e1, e2, parser.tree); :} 
+	|expr:e1 DIVIDE expr:e2		{: //RESULT = new NodeArithmetic(MyEnumType.DIVIDE, e1, e2, parser.tree); :} 
+	|LPAR expr:e RPAR		{: //RESULT = e; :}
+	|MINUS expr:e		{: //NodeConstant moins1 = new NodeConstant("-1", MyEnumType.INTEGER);
+				//RESULT = new NodeArithmetic(MyEnumType.TIMES, e, moins1, parser.tree); :} */
+	|val:v expr		
+		{: 
+			//RESULT = v;
+		:}
+
 	;
 
 variable ::= 
-	type:t STRINGCONTENT:var EQ val:val SEMIC
-		{: RESULT = new NodeAllocation(var, t, val, parser.tree); :}
+	type:t STRINGCONTENT:name EQ val:val SEMIC
+		{: 
+			Tac myTac = new Tac(null, name, val, null);
+			Tree.tac.add(myTac);
+			RESULT = new NodeVariable(t, name, val); 
+		:}
 
-	|type:t STRINGCONTENT:var SEMIC
-		{: RESULT = new NodeAllocation(var, t, null, parser.tree); :}
 
-	|STRINGCONTENT:var EQ STRINGCONTENT:val SEMIC
-		//{: RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); :}
+	|type:t STRINGCONTENT:name SEMIC
+		{:
+			RESULT = new NodeVariable(t, name, null); 
+		:}
 
-	|type STRINGCONTENT:var EQ TRUE:val SEMIC
-		{: NodeConstant t = new NodeConstant(val, MyEnumType.BOOLEAN);
-		RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, t, parser.tree); :}
 
-	|type STRINGCONTENT:var EQ FALSE:val SEMIC
-		{: NodeConstant f = new NodeConstant(val, MyEnumType.BOOLEAN);
-		RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, f, parser.tree); :}
+	|STRINGCONTENT:name EQ STRINGCONTENT:val SEMIC
+		{: 
+			Tac myTac = new Tac(null, name , val, null);
+			Tree.tac.add(myTac);
+			RESULT = new NodeVariable(null, name, val); 
+		:}
+
+
+	|type:t STRINGCONTENT:name EQ TRUE:val SEMIC
+		{: 
+			Tac myTac = new Tac(null, name , val, null);
+			Tree.tac.add(myTac);
+			RESULT = new NodeVariable(t, name, val);
+	    :}
+
+
+	|type:t STRINGCONTENT:name EQ FALSE:val SEMIC
+		{: 			
+			Tac myTac = new Tac(null, name , val, null);
+			Tree.tac.add(myTac);
+			RESULT = new NodeVariable(t, name, val); 
+		:}
+
 
 	|type STRINGCONTENT:var EQ LPAR enumeration:val RPAR SEMIC
-		//{: RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); :}
+		{: 
+			//RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); 
+		:}
 
-	|intervals SEMIC
+
+	|intervals SEMIC	
 
 	|array SEMIC
-	type STRINGCONTENT EQ 
+
+	|type STRINGCONTENT EQ expr SEMIC
+
 
 	;
 
@@ -175,8 +209,8 @@ enumeration ::=
 	;
 
 val ::=
-	NUMBER:val		{: RESULT = new NodeConstant(val.toString(),  MyEnumType.INTEGER); :}
-	|STRINGCONTENT:val		{: RESULT = new NodeConstant(val.toString(),  MyEnumType.STRING); :}
+	NUMBER:val1		{: RESULT = val1; :}
+	|STRINGCONTENT:val2		{: RESULT = val2; :}
 	;
 
 type ::=

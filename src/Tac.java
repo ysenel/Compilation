@@ -8,8 +8,8 @@ public class Tac{
 	public Tac(String op, String add1, String add2, String add3){
 		this.op = op;
 		this.add1 = add1;
-		this.add1 = add1;
-		this.add1 = add1;
+		this.add2 = add2;
+		this.add3 = add3;
 	}
 
 	public String getAdd1(){
@@ -29,6 +29,6 @@ public class Tac{
 	}
 
 	public String toString(){
-		return new String(op + " : " + add1 + " : " + add2 + " : " + add3);
+		return new String(op + " : " + this.add1 + " : " + this.add2 + " : " + this.add3);
 	}
 }

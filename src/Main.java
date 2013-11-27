@@ -15,7 +15,7 @@ public class Main {
                                 Symbol result=myParser.parse();
                         }
                         catch (Exception e) {
-                                System.out.println("parse error");
+                                System.out.println("parse errors");
                         }
                 }
                 catch (Exception e){

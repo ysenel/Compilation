@@ -3,8 +3,8 @@ import java.util.*;
 public class Tree {
 	private Node node;
 
-	public ArrayList<Tac> tac;
-	public int numVar;
+	public static ArrayList<Tac> tac;
+	public static int numVar;
 
 	public Tree(){
 		this.node = null;
@@ -24,11 +24,13 @@ public class Tree {
 
 	public String TacToString(){
 		//GetTac() used to build ArrayList tac, string is never used
-		String phony = node.GetTac();
+		//String phony = node.GetTac();
 		StringBuffer sb = new StringBuffer();
 		for(Tac t: tac){
 			sb.append(t.toString());
+			sb.append("\n");
 		}
+
 		return sb.toString();
 	}
 }

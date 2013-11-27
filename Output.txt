@@ -1,0 +1,2 @@
+Syntax error at character 7 of input
+Erreur fatale

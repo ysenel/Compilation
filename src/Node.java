@@ -1,5 +1,5 @@
 public interface Node {
-
-	public String GetTac();
+	public void lolString();
+	//public String GetTac();
 
 }
