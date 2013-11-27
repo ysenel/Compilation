@@ -50,9 +50,8 @@ terminal String FALSE ;
 terminal String NUMBER;
 terminal String STRINGCONTENT;
 
-non terminal Node begin, variable, expr;
+non terminal Node begin, variable, val, expr;
 non terminal Tree begining;
-non terminal String val;
 non terminal enumeration, intervals, array, instructions, switchCase, loop, case;
 non terminal Boolean prop;
 non terminal MyEnumType type;
@@ -103,27 +102,67 @@ prop ::=
 	;
 
 expr ::=
-	expr:e1 PLUS expr:e2		{: //RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2, parser.tree);
-	 :}
-	/*|expr:e1 MINUS expr:e2		{: //RESULT = new NodeArithmetic(MyEnumType.MINUS, e1, e2, parser.tree); :} 
-	|expr:e1 TIMES expr:e2		{: //RESULT = new NodeArithmetic(MyEnumType.TIMES, e1, e2, parser.tree); :} 
-	|expr:e1 DIVIDE expr:e2		{: //RESULT = new NodeArithmetic(MyEnumType.DIVIDE, e1, e2, parser.tree); :} 
-	|LPAR expr:e RPAR		{: //RESULT = e; :}
-	|MINUS expr:e		{: //NodeConstant moins1 = new NodeConstant("-1", MyEnumType.INTEGER);
-				//RESULT = new NodeArithmetic(MyEnumType.TIMES, e, moins1, parser.tree); :} */
-	|val:v expr		
-		{: 
-			//RESULT = v;
-		:}
+    expr:e1 PLUS:p expr:e2 {: 
+    			System.out.println("ici42");
 
-	;
+    	if(e1 instanceof NodeConstant && e2 instanceof NodeConstant){
+    				System.out.println("ici2");
+
+    		String t = new String("t" + parser.tree.numVar++);
+			Tac tac = new Tac("+", t, e1.GetTac(), e2.GetTac());
+			parser.tree.tac.add(tac);
+    		RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2, t);
+    }
+    	if (e1  instanceof NodeArithmetic && e2  instanceof NodeConstant) {
+    				System.out.println("ici3");
+
+			String t = new String("t" + parser.tree.numVar++);
+			Tac tac = new Tac("+", t, e1.getT(), e2.GetTac());
+			parser.tree.tac.add(tac);
+    		RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2, t);
+	}
+
+		if (e1  instanceof NodeConstant && e2  instanceof NodeArithmetic) {
+			String t = new String("t" + parser.tree.numVar++);
+			Tac tac = new Tac("+", t, e2.getT(), e1.GetTac());
+			parser.tree.tac.add(tac);
+    		RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2, t);
+
+		}
+
+
+    	:}
+
+
+	|expr:e1 MINUS expr:e2 {:
+
+
+	 :}   
+
+
+    |expr:e1 TIMES expr:e2 {:
+		String t = new String("t" + parser.tree.numVar++);
+		Tac tac = new Tac("*", t, e1.GetTac(), e2.GetTac());
+		parser.tree.tac.add(tac);
+    	RESULT = new NodeArithmetic(MyEnumType.TIMES, e1, e2, t);
+
+     :}   
+
+
+
+
+	|expr:e1 DIVIDE expr:e2 {: :}    
+    //|LPAR expr:e RPAR {: :}    
+    |MINUS expr:e {: :} %prec MINUS_U 
+	|val:v {: RESULT = v; :}
+    ;
 
 variable ::= 
-	type:t STRINGCONTENT:name EQ val:val SEMIC
+	type:t STRINGCONTENT:name EQ expr:val SEMIC
 		{: 
-			Tac myTac = new Tac(null, name, val, null);
+			Tac myTac = new Tac(null, name, val.getValue(), null);
 			Tree.tac.add(myTac);
-			RESULT = new NodeVariable(t, name, val); 
+			RESULT = new NodeVariable(t, name, val.getValue());
 		:}
 
 
@@ -134,7 +173,7 @@ variable ::=
 
 
 	|STRINGCONTENT:name EQ STRINGCONTENT:val SEMIC
-		{: 
+		{: 	
 			Tac myTac = new Tac(null, name , val, null);
 			Tree.tac.add(myTac);
 			RESULT = new NodeVariable(null, name, val); 
@@ -167,10 +206,8 @@ variable ::=
 
 	|array SEMIC
 
-	|type STRINGCONTENT EQ expr SEMIC
-
-
 	;
+
 
 loop ::= 
 	WHILE LPAR prop RPAR DO instructions OD
@@ -209,8 +246,8 @@ enumeration ::=
 	;
 
 val ::=
-	NUMBER:val1		{: RESULT = val1; :}
-	|STRINGCONTENT:val2		{: RESULT = val2; :}
+	NUMBER:val1		{: RESULT = new NodeConstant(val1, null); :}
+	|STRINGCONTENT:val2		{: RESULT = new NodeConstant(val2, null); :}
 	;
 
 type ::=

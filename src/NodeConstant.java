@@ -8,6 +8,14 @@ public class NodeConstant implements Node{
 		this.type = type;
 	}
 
+	public String getValue(){
+		return this.value;
+	}
+
+		public void lolString(){
+		System.out.println(this.type.toString() + " " + this.value);
+	}
+
 	//return value to build TAC
 	public String GetTac(){
 		return this.value;

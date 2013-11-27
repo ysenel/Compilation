@@ -1,2 +1,11 @@
-Syntax error at character 7 of input
-Erreur fatale
+ici42
+a = 9 null null
+b = 10 null null
+d = a null null
+e = T null null
+f = F null null
+a = c null null
+t0 = 2 * 3
+t1 = t0 + 1
+g = t0 null null
+

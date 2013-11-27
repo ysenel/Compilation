@@ -29,6 +29,6 @@ public class Tac{
 	}
 
 	public String toString(){
-		return new String(op + " : " + this.add1 + " : " + this.add2 + " : " + this.add3);
+		return new String(this.add1 + " = " + this.add2 + " " + this.op + " " + this.add3);
 	}
 }
