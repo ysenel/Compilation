@@ -1,8 +1,11 @@
-t0 = 1 PLUS 2
-t1 = t0 PLUS 3
-t2 = t1 PLUS 4
-t3 = t2 PLUS 5
-t4 = t3 PLUS 6
-t5 = t4 PLUS 7
-INTEGER __uk=t5
-
+ici1000000
+ici42
+empty: false
+ici
+ici43
+ici44
+ici45
+empty2: false
+ici48
+ici49
+parse errors

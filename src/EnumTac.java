@@ -1,4 +1,4 @@
 public enum EnumTac {
-	VARIABLE, CALC;
+	VARIABLE, CALC, JMP, JMPCOND, LABEL;
 
 }

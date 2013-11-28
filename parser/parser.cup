@@ -4,6 +4,7 @@ import java_cup.runtime.*;
 import java.lang.Number;
 import java.util.Vector;
 import java.io.*;
+import java.util.*;
 
 parser code {:
 
@@ -33,6 +34,7 @@ public void unrecovered_syntax_error(Symbol cur_token){
 }
 
 public Tree tree = new Tree();
+public ArrayList<Node> arrayWhile = new ArrayList<Node>();
 
 :}
 
@@ -50,10 +52,11 @@ terminal String FALSE ;
 terminal String NUMBER;
 terminal String STRINGCONTENT;
 
-non terminal Node begin, variable, val, expr;
+non terminal Node begin, variable, val, expr, loop, switchCase;
 non terminal Tree begining;
-non terminal enumeration, intervals, array, instructions, switchCase, loop, case;
-non terminal Boolean prop;
+non terminal ArrayList<Node> instructions;
+non terminal enumeration, intervals, array, case;
+non terminal Node prop;
 non terminal MyEnumType type;
 
 precedence left PLUS, MINUS, EQUAL, EQUAL_NOT, EQUAL_INF, EQUAL_SUP, SUP, INF;
@@ -66,44 +69,51 @@ begining ::=
 		
 	begin:b 
 		{:
+			System.out.println("ici45");
 		System.out.println(parser.tree.TacToString());
+		System.out.println("ici46");
 		:}
 	;
 
 begin ::=
-	variable:var begin:b
+	variable:var begin
 		{: Tree.node.add(var); :}
-	|switchCase begin
-	|loop begin
+	|switchCase:s begin
+		{: Tree.node.add(s); :}
+	|loop:l begin
+		{: System.out.println("ici43");
+			Tree.node.add(l);
+			System.out.println("ici44");
+			 :}
 	|
 	;
 
 prop ::=
-	prop AND prop
-	|prop OR prop
-	|prop EQUAL prop
-	|expr EQUAL expr
-	|prop EQUAL_NOT prop
-	|expr EQUAL_NOT expr
-	|expr SUP expr
-	|prop SUP prop
-	|prop INF prop
-	|expr INF expr
-	|prop EQUAL_SUP prop
-	|expr EQUAL_SUP expr
-	|prop EQUAL_INF prop
-	|expr EQUAL_INF expr
-	|LPAR prop RPAR 
-	|NOT prop
-	|TRUE
-	|FALSE
+	prop:p1 AND prop:p2 {: RESULT = new NodeArithmetic(MyEnumType.AND, p1, p2); :}
+	|prop:p1 OR prop:p2 {: RESULT = new NodeArithmetic(MyEnumType.OR, p1, p2); :}
+	|prop:p1 EQUAL prop:p2 {: RESULT = new NodeArithmetic(MyEnumType.EQUAL, p1, p2); :}
+	|expr:e1 EQUAL expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.EQUAL, e1, e2); :}
+	|prop:p1 EQUAL_NOT prop:p2 {: RESULT = new NodeArithmetic(MyEnumType.EQUAL_NOT, p1, p2); :}
+	|expr:e1 EQUAL_NOT expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.EQUAL_NOT, e1, e2); :}
+	|expr:e1 SUP expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.SUP, e1, e2); :}
+	|prop:p1 SUP prop:p2 {: RESULT = new NodeArithmetic(MyEnumType.SUP, p1, p2); :}
+	|prop:p1 INF prop:p2 {: RESULT = new NodeArithmetic(MyEnumType.INF, p1, p2); :}
+	|expr:e1 INF expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.INF, e1, e2); :}
+	|prop:p1 EQUAL_SUP prop:p2 {: RESULT = new NodeArithmetic(MyEnumType.EQUAL_SUP, p1, p2); :}
+	|expr:e1 EQUAL_SUP expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.EQUAL_SUP, e1, e2); :}
+	|prop:p1 EQUAL_INF prop:p2 {: RESULT = new NodeArithmetic(MyEnumType.EQUAL_INF, p1, p2); :}
+	|expr:e1 EQUAL_INF expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.EQUAL_INF, e1, e2); :}
+	|LPAR prop:p RPAR {: RESULT = p; :}
+	|NOT prop:p {: RESULT = new NodeArithmetic(MyEnumType.NOT, p, null); :}
+	|TRUE:t {:RESULT = new NodeConstant(t.toString(), null);:}
+	|FALSE:f {:RESULT = new NodeConstant(f.toString(), null);:}
 	;
 
 expr ::=
-    expr:e1 PLUS:p expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2); :}
-	|expr:e1 MINUS expr:e2 {: :}   
+    expr:e1 PLUS expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2); :}
+	|expr:e1 MINUS expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.MINUS, e1, e2); :}   
     |expr:e1 TIMES expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.TIMES, e1, e2); :}
-	|expr:e1 DIVIDE expr:e2 {: :}    
+	|expr:e1 DIVIDE expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.DIVIDE, e1, e2); :}    
     //|LPAR expr:e RPAR {: :}    
     |MINUS expr:e {: :} %prec MINUS_U 
 	|val:v {: RESULT = v; :}
@@ -118,6 +128,9 @@ variable ::=
 
 	|type:t STRINGCONTENT:name SEMIC
 		{:
+
+
+			System.out.println("ici1000000");
 			RESULT = new NodeVariable(t, name, null, null); 
 		:}
 
@@ -160,11 +173,20 @@ variable ::=
 
 
 loop ::= 
-	WHILE LPAR prop RPAR DO instructions OD
+	WHILE LPAR prop:p RPAR DO instructions OD
+		{:
+			System.out.println("empty: " + parser.arrayWhile.isEmpty());
+			RESULT = new NodeWhile(p, parser.arrayWhile);
+			System.out.println("ici");
+			//parser.arrayWhile = new ArrayList<Node>();
+		:}
 	;
 
 instructions ::=
-	variable instructions
+	variable:v instructions
+		{: 
+			System.out.println("ici42");
+			parser.arrayWhile.add(v); :}
 	|switchCase instructions
 	|loop instructions
 	|
@@ -194,6 +216,16 @@ enumeration ::=
 	|COMA enumeration
 	|
 	;
+
+
+
+
+
+
+
+
+
+
 
 val ::=
 	NUMBER:val1		{: RESULT = new NodeConstant(val1, null); :}

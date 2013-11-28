@@ -28,7 +28,7 @@ Lionel
         classpath=".:${BIN}:${LIB}/java-cup-11a-runtime.jar"
 
 	output="Output.txt">
-      <arg value="test/simpleVariables.txt"/>
+      <arg value="test/loop.txt"/>
     </java>
     
   </target>

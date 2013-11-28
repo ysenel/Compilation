@@ -5,6 +5,7 @@ public class Tree {
 
 	public static ArrayList<Tac> tac;
 	public static int numVar;
+	public static int numLab;
 
 	public Tree(){
 		//this.node = null;
@@ -24,6 +25,7 @@ public class Tree {
 
 	public String TacToString(){
 		//GetTac() used to build ArrayList tac, string is never used
+		Collections.reverse(node);  // get the instructions in the wright order
 		for(Node n: node){
 			n.GetTac();
 		}

@@ -40,6 +40,10 @@ public class Tac{
 		return this.op;
 	}
 
+	public void setAddr2(String L1){
+		add2 = L1;
+	}
+
 	public String toString(){
 		switch(type){
 			case VARIABLE : 
@@ -47,6 +51,16 @@ public class Tac{
 
 			case CALC :
 				return add3 + " = "  + add1 + " " + op + " " + add2;
+
+			case JMPCOND :
+				return "if " + add1 + " jmp " + add2;
+
+			case JMP :
+				return "jmp " + add2;
+
+			case LABEL :
+				System.out.println("ici2");
+				return add1;
 
 			default:
 				return new String("non reconnu");				

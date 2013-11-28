@@ -6,7 +6,7 @@ public class NodeVariable implements Node{
 
 
 	public NodeVariable(MyEnumType type, String name, String value, Node nodeValue){
-		this.name = new String("__u" + name);
+		this.name = new String("__" + name);
 		this.type = type;
 		this.value = value;	
 		this.nodeValue = nodeValue;
