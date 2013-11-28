@@ -12,13 +12,16 @@ public class NodeConstant implements Node{
 		return this.value;
 	}
 
-		public void lolString(){
+	public void lolString(){
 		System.out.println(this.type.toString() + " " + this.value);
 	}
 
 	//return value to build TAC
 	public String GetTac(){
 		return this.value;
+	}
+	public String getT(){
+		return "phony";
 	}
 
 }

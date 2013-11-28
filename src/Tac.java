@@ -4,12 +4,24 @@ public class Tac{
 	private String add1;
 	private String add2;
 	private String add3;
+	private EnumTac type;
 
-	public Tac(String op, String add1, String add2, String add3){
+	public Tac(String op, String add1, String add2, String add3, EnumTac type){
 		this.op = op;
 		this.add1 = add1;
 		this.add2 = add2;
 		this.add3 = add3;
+		this.type = type;
+	}
+
+	public Tac(String op, String add1, String add2, String add3)
+	{
+		this(op, add1, add2, add3, EnumTac.VARIABLE);
+	}
+
+	public Tac(String op, EnumTac type)
+	{
+		this(op, null, null , null, type);
 	}
 
 	public String getAdd1(){
@@ -29,6 +41,15 @@ public class Tac{
 	}
 
 	public String toString(){
-		return new String(this.add1 + " = " + this.add2 + " " + this.op + " " + this.add3);
+		switch(type){
+			case VARIABLE : 
+				return new String(this.op);
+
+			case CALC :
+				return add3 + " = "  + add1 + " " + op + " " + add2;
+
+			default:
+				return new String("non reconnu");				
+		}
 	}
 }

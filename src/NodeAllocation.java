@@ -19,5 +19,14 @@ public class NodeAllocation implements Node{
 		tree.tac.add(tac);
 		return t;
 	}
+	public void lolString(){
+
+	}
+	public String getValue(){
+		return "phony";
+	}
+	public String getT(){
+		return "phony";
+	}
 
 }

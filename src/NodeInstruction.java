@@ -12,4 +12,13 @@ public class NodeInstruction implements Node{
 	public String GetTac(){
 		return instruction.GetTac() + next.GetTac();
 	}
+	public String getT(){
+		return "phony";
+	}
+	public String getValue(){
+		return "phony";
+	}
+	public void lolString(){
+		
+	}
 }

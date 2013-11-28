@@ -2,24 +2,21 @@ public class NodeArithmetic implements Node{
 	private Node left;
 	private Node right;
 	private MyEnumType type;
-	private String t;
 
 
-	public NodeArithmetic(MyEnumType type, Node left, Node right, String t){
+	public NodeArithmetic(MyEnumType type, Node left, Node right){
 		this.type = type;
 		this.left = left;
 		this.right = right;
-		this.t = t;
-
 	}
 
 	public String getT(){
-		return this.t;
+		return "phony";
 	}
 	
 	public String getValue()
 	{
-		return "t0";
+		return "t"+Tree.numVar;
 	}
 	public void lolString()
 	{
@@ -27,7 +24,17 @@ public class NodeArithmetic implements Node{
 	}
 
 	public String GetTac(){
-		return "salut";
+		String left = this.left.GetTac();
+		String right  = this.right.GetTac();
+		String val = getValue();
+
+		Tree.numVar++;
+		
+		Tac tac = new Tac(type.toString(), left, right, val, EnumTac.CALC);
+		Tree.tac.add(tac);
+		
+		
+		return val;
 	}
 	//build TAC, and return temporary variable name
 

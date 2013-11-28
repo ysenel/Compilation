@@ -63,18 +63,16 @@ precedence left MINUS_U, NOT;
 start with begining;
 
 begining ::=
+		
 	begin:b 
 		{:
-		parser.tree.setNode(b);
 		System.out.println(parser.tree.TacToString());
-				:}
+		:}
 	;
 
 begin ::=
 	variable:var begin:b
-		{: RESULT = var;
-			//RESULT = new NodeInstruction(var, b);
-			 :}
+		{: Tree.node.add(var); :}
 	|switchCase begin
 	|loop begin
 	|
@@ -102,55 +100,9 @@ prop ::=
 	;
 
 expr ::=
-    expr:e1 PLUS:p expr:e2 {: 
-    			System.out.println("ici42");
-
-    	if(e1 instanceof NodeConstant && e2 instanceof NodeConstant){
-    				System.out.println("ici2");
-
-    		String t = new String("t" + parser.tree.numVar++);
-			Tac tac = new Tac("+", t, e1.GetTac(), e2.GetTac());
-			parser.tree.tac.add(tac);
-    		RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2, t);
-    }
-    	if (e1  instanceof NodeArithmetic && e2  instanceof NodeConstant) {
-    				System.out.println("ici3");
-
-			String t = new String("t" + parser.tree.numVar++);
-			Tac tac = new Tac("+", t, e1.getT(), e2.GetTac());
-			parser.tree.tac.add(tac);
-    		RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2, t);
-	}
-
-		if (e1  instanceof NodeConstant && e2  instanceof NodeArithmetic) {
-			String t = new String("t" + parser.tree.numVar++);
-			Tac tac = new Tac("+", t, e2.getT(), e1.GetTac());
-			parser.tree.tac.add(tac);
-    		RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2, t);
-
-		}
-
-
-    	:}
-
-
-	|expr:e1 MINUS expr:e2 {:
-
-
-	 :}   
-
-
-    |expr:e1 TIMES expr:e2 {:
-		String t = new String("t" + parser.tree.numVar++);
-		Tac tac = new Tac("*", t, e1.GetTac(), e2.GetTac());
-		parser.tree.tac.add(tac);
-    	RESULT = new NodeArithmetic(MyEnumType.TIMES, e1, e2, t);
-
-     :}   
-
-
-
-
+    expr:e1 PLUS:p expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2); :}
+	|expr:e1 MINUS expr:e2 {: :}   
+    |expr:e1 TIMES expr:e2 {: RESULT = new NodeArithmetic(MyEnumType.TIMES, e1, e2); :}
 	|expr:e1 DIVIDE expr:e2 {: :}    
     //|LPAR expr:e RPAR {: :}    
     |MINUS expr:e {: :} %prec MINUS_U 
@@ -160,39 +112,37 @@ expr ::=
 variable ::= 
 	type:t STRINGCONTENT:name EQ expr:val SEMIC
 		{: 
-			Tac myTac = new Tac(null, name, val.getValue(), null);
-			Tree.tac.add(myTac);
-			RESULT = new NodeVariable(t, name, val.getValue());
+			RESULT = new NodeVariable(t, name, val.getValue(), val);
 		:}
 
 
 	|type:t STRINGCONTENT:name SEMIC
 		{:
-			RESULT = new NodeVariable(t, name, null); 
+			RESULT = new NodeVariable(t, name, null, null); 
 		:}
 
 
 	|STRINGCONTENT:name EQ STRINGCONTENT:val SEMIC
 		{: 	
-			Tac myTac = new Tac(null, name , val, null);
-			Tree.tac.add(myTac);
-			RESULT = new NodeVariable(null, name, val); 
+			RESULT = new NodeVariable(null, name, val, null); 
+		:}
+
+
+	|STRINGCONTENT:name EQ NUMBER:val SEMIC
+		{: 	
+			RESULT = new NodeVariable(null, name, val, null); 
 		:}
 
 
 	|type:t STRINGCONTENT:name EQ TRUE:val SEMIC
 		{: 
-			Tac myTac = new Tac(null, name , val, null);
-			Tree.tac.add(myTac);
-			RESULT = new NodeVariable(t, name, val);
+			RESULT = new NodeVariable(t, name, val, null);
 	    :}
 
 
 	|type:t STRINGCONTENT:name EQ FALSE:val SEMIC
 		{: 			
-			Tac myTac = new Tac(null, name , val, null);
-			Tree.tac.add(myTac);
-			RESULT = new NodeVariable(t, name, val); 
+			RESULT = new NodeVariable(t, name, val, null); 
 		:}
 
 

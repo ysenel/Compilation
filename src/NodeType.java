@@ -9,5 +9,14 @@ public class NodeType implements Node {
 	public String GetTac(){
 		return type.name();
 	}
+	public void lolString(){
+
+	}
+	public String getValue(){
+		return "phony";
+	}
+	public String getT(){
+		return "phony";
+	}
 
 }
