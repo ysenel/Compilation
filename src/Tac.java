@@ -59,7 +59,6 @@ public class Tac{
 				return "jmp " + add2;
 
 			case LABEL :
-				System.out.println("ici2");
 				return add1;
 
 			default:

@@ -30,8 +30,6 @@ Strings = [a-zA-Z]+
 "-"	{ return new Symbol(MySymbol.MINUS, yyline, yycolumn); }
 "*"	{ return new Symbol(MySymbol.TIMES, yyline, yycolumn); }
 "/"	{ return new Symbol(MySymbol.DIVIDE, yyline, yycolumn); }
-"=" { return new Symbol(MySymbol.EQ, yyline, yycolumn); }
-
 
 // logic
 "!"	{ return new Symbol(MySymbol.NOT, yyline, yycolumn); }
@@ -47,6 +45,7 @@ Strings = [a-zA-Z]+
 "F"	{ return new Symbol(MySymbol.FALSE, yyline, yycolumn, new String(yytext())); }
 
 // Symbol
+"=" { return new Symbol(MySymbol.EQ, yyline, yycolumn); }
 "[" { return new Symbol(MySymbol.LBRACKET, yyline, yycolumn); }
 "]" { return new Symbol(MySymbol.RBRACKET, yyline, yycolumn); }
 ".." { return new Symbol(MySymbol.DOTDOT, yyline, yycolumn); }

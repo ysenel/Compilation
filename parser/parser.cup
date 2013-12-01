@@ -144,12 +144,10 @@ variable ::=
 	|array SEMIC
 	;
 
-
 loop ::=
         {: parser.arrayWhile = new ArrayList<Node>(); :}
 	WHILE LPAR prop:p RPAR DO instructions OD
 		{:
-			//
 			RESULT = new NodeWhile(p, parser.arrayWhile);
 		:}
 	;
