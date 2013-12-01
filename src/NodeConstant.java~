@@ -1,0 +1,15 @@
+public class NodeConstant implements Node{
+	private String value;
+	private MyEnumType type;
+
+
+	public NodeConstant(String s, MyEnumType type){
+		this.value = s;
+		this.type = type;
+	}
+
+	public Tac[] GetTac(){
+		return new Tac[1] = Tac(type.toString(), value, null, null);
+	}
+
+}

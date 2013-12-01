@@ -1,0 +1,181 @@
+// CUP specification for a simple expression evaluator (w/ actions)
+
+import java_cup.runtime.*;
+import java.lang.Number;
+import java.util.Vector;
+import java.io.*;
+
+parser code {:
+
+public void syntax_error(String message, Object o, int line, int column){
+	String msg2 = new StringBuilder().append("ligne : ").append(line+1).append(",").append(column)
+					.append(",\t erreur : ").append(message)
+					.append("\n\t-> symbole : ").append(o).toString();
+	report_error(msg2, null) ;
+}
+public void syntax_error(String message, Object o){
+	String msg2 = new StringBuilder().append("objet : ").append(o).append(" ->\t ").append(message).toString();
+	report_error(msg2, null) ;
+}
+public void unrecovered_syntax_error(Symbol cur_token, String message){
+	try{
+		report_fatal_error(message, null) ;
+	}catch (Exception e){
+		
+	}
+}
+public void unrecovered_syntax_error(Symbol cur_token){
+	try{
+		report_fatal_error("Erreur fatale", null) ;
+	}catch (Exception e){
+		
+	}
+}
+
+public Tree tree = new Tree();
+
+:}
+
+
+terminal LPAR, RPAR, PLUS, MINUS, TIMES, DIVIDE, MINUS_U;
+terminal NOT, AND, OR;
+terminal EQ, EQUAL, EQUAL_NOT, EQUAL_INF, EQUAL_SUP, INF, SUP;
+terminal SEMIC;
+terminal LBRACKET, RBRACKET, DOTDOT, COMA, QUOTE, LBRACE, RBRACE;
+terminal INTEGER, BIGINTEGER, UINTEGER, UBIGINTEGER, BOOL, CHAR, REAL, ENUM;
+terminal ARROW, STRING;
+terminal SWITCH, CASE, WHILE, DO, OD, END_SWITCH;
+terminal String TRUE, FALSE ;
+terminal String NUMBER, STRINGCONTENT;
+
+non terminal Node begining, begin, variable, val, expr;
+non terminal type, enumeration, intervals, array, instructions, switchCase, loop, case;
+non terminal Boolean prop;
+
+precedence left PLUS, MINUS, EQUAL, EQUAL_NOT, EQUAL_INF, EQUAL_SUP, SUP, INF;
+precedence left TIMES, DIVIDE, AND, OR;
+precedence left MINUS_U, NOT;
+
+start with begining;
+
+begining ::=
+		{:	
+		:}
+	begin:b 
+		{:		 
+		parser.tree.setNode(b);
+		System.out.println(parser.tree.TacToString());
+		:}
+	;
+
+begin ::=
+	variable:var begin:b
+		{: RESULT = new NodeInstruction(var, b); :}
+	|switchCase begin
+	|loop begin
+	|
+	;
+
+prop ::=
+	prop AND prop
+	|prop OR prop
+	|prop EQUAL prop
+	|expr EQUAL expr
+	|prop EQUAL_NOT prop
+	|expr EQUAL_NOT expr
+	|expr SUP expr
+	|prop SUP prop
+	|prop INF prop
+	|expr INF expr
+	|prop EQUAL_SUP prop
+	|expr EQUAL_SUP expr
+	|prop EQUAL_INF prop
+	|expr EQUAL_INF expr
+	|LPAR prop RPAR 
+	|NOT prop
+	|TRUE
+	|FALSE
+	;
+
+expr ::=
+	expr:e1 PLUS expr:e2		{: RESULT = new NodeArithmetic(MyEnumType.PLUS, e1, e2, parser.tree); :}
+	|expr:e1 MINUS expr:e2		{: RESULT = new NodeArithmetic(MyEnumType.MINUS, e1, e2, parser.tree); :} 
+	|expr:e1 TIMES expr:e2		{: RESULT = new NodeArithmetic(MyEnumType.TIMES, e1, e2, parser.tree); :} 
+	|expr:e1 DIVIDE expr:e2		{: RESULT = new NodeArithmetic(MyEnumType.DIVIDE, e1, e2, parser.tree); :} 
+	|LPAR expr:e RPAR		{: RESULT = e; :}
+	|MINUS expr:e		{: NodeConstant moins1 = new NodeConstant("-1", MyEnumType.INTEGER);
+				RESULT = new NodeArithmetic(MyEnumType.TIMES, e, moins1, parser.tree); :} 
+	|val:v		{: RESULT = v; :}
+	;
+
+variable ::= 
+	type STRINGCONTENT:var EQ val:val SEMIC
+		//{: RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); :}
+	|type STRINGCONTENT:var SEMIC
+		{: RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, null, parser.tree); :}
+	|STRINGCONTENT:var EQ STRINGCONTENT:val SEMIC
+		//{: RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); :}
+	|type STRINGCONTENT:var EQ TRUE:val SEMIC
+		{: NodeConstant t = new NodeConstant(val, MyEnumType.BOOLEAN);
+		RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, t, parser.tree); :}
+	|type STRINGCONTENT:var EQ FALSE:val SEMIC
+		{: NodeConstant f = new NodeConstant(val, MyEnumType.BOOLEAN);
+		RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, f, parser.tree); :}
+	|type STRINGCONTENT:var EQ LPAR enumeration:val RPAR SEMIC
+		//{: RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); :}
+	|intervals SEMIC
+	|array SEMIC
+	;
+
+loop ::= 
+	WHILE LPAR prop RPAR DO instructions OD
+	;
+
+instructions ::=
+	variable instructions
+	|switchCase instructions
+	|loop instructions
+	|
+	;
+
+
+switchCase ::= 
+	SWITCH case END_SWITCH
+	;
+
+case ::=
+	CASE LPAR prop RPAR instructions case
+	|
+	;
+
+
+array ::=
+	type STRINGCONTENT LBRACKET NUMBER RBRACKET
+	;
+
+intervals ::=
+	LBRACKET NUMBER DOTDOT NUMBER RBRACKET
+	;
+
+enumeration ::=
+	NUMBER enumeration
+	|COMA enumeration
+	|
+	;
+
+val ::=
+	NUMBER:val		{: RESULT = new NodeConstant(val.toString(),  MyEnumType.INTEGER); :}
+	|STRINGCONTENT:val		{: RESULT = new NodeConstant(val.toString(),  MyEnumType.STRING); :}
+	;
+
+type ::=
+	INTEGER:i		{: RESULT = new NodeConstant(i.toString(), MyEnumType.INTEGER); :}
+	|BIGINTEGER:i		{: RESULT = new NodeConstant(i.toString(), MyEnumType.BIGINTEGER); :}
+	|UINTEGER:i		{: RESULT = new NodeConstant(i.toString(), MyEnumType.UINTEGER); :}
+	|UBIGINTEGER:i		{: RESULT = new NodeConstant(i.toString(), MyEnumType.UBIGINTEGER); :}
+	|BOOL:b		{: RESULT = new NodeConstant(b.toString(), MyEnumType.BOOLEAN); :}
+	|CHAR:c		{: RESULT = new NodeConstant(c.toString(), MyEnumType.CHARACTER); :}
+	|REAL:r		{: RESULT = new NodeConstant(r.toString(), MyEnumType.REAL); :}
+	|ENUM:e		{: RESULT = new NodeConstant(e.toString(), MyEnumType.ENUM); :}
+	|STRING:s		{: RESULT = new NodeConstant(s.toString(), MyEnumType.STRING); :}
+	;

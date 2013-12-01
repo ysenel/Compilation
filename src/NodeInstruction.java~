@@ -1,0 +1,15 @@
+public class NodeInstruction implements Node{
+	private Node instruction;
+	private NodeInstruction next;
+
+	public NodeInstruction(Node instruction, NodeInstruction next){
+		this.instruction = instruction;
+		this.next = next;
+	}
+	
+	//lead nodes instruction and next to build TAC
+	//return value is never used
+	public String GetTac(){
+		return instruction.GetTac() + next.GetTac();
+	}
+}

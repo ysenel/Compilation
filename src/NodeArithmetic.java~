@@ -1,0 +1,20 @@
+public class NodeArithmetic implements Node{
+	private Tree tree;
+	private Node left;
+	private Node right;
+	private MyEnumType type;
+
+	public NodeArithmetic(MyEnumType type, Node left, Node right, Tree tree){
+		this.type = type;
+		this.left = left;
+		this.right = right;
+	}
+	
+	//build TAC, and return temporary variable name
+	public String GetTac(){
+		String t = new String("t" + numVar++);
+		Tac tac = new Tac(type.toString(), t, left.GetTac(), right.GetTac());
+		tree.tac.add(tac);
+		return t;
+	}
+}
