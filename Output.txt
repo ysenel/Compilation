@@ -1,1 +1,10 @@
-parse errors
+ici2
+ici2
+L0:
+t0 = n > l
+if t0 jmp L1:
+INTEGER __a
+t1 = t1
+jmp L0:
+L1:
+
