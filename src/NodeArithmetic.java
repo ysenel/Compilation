@@ -10,20 +10,12 @@ public class NodeArithmetic implements Node{
 		this.right = right;
 	}
 
-	public String getT(){
-		return "phony";
-	}
-	
-	public String getValue()
+    public String getValue()
 	{
 		return "t"+Tree.numVar;
 	}
-	public void lolString()
-	{
-		
-	}
 
-	public String GetTac(){
+    public String GetTac(){
 		String left = this.left.GetTac();
 		String right  = this.right.GetTac();
 		String val = getValue();

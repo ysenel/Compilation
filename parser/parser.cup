@@ -1,5 +1,3 @@
-// CUP specification for a simple expression evaluator (w/ actions)
-
 import java_cup.runtime.*;
 import java.lang.Number;
 import java.util.Vector;
@@ -66,12 +64,9 @@ precedence left MINUS_U, NOT;
 start with begining;
 
 begining ::=
-		
 	begin:b 
 		{:
-			System.out.println("ici45");
 		System.out.println(parser.tree.TacToString());
-		System.out.println("ici46");
 		:}
 	;
 
@@ -81,10 +76,7 @@ begin ::=
 	|switchCase:s begin
 		{: Tree.node.add(s); :}
 	|loop:l begin
-		{: System.out.println("ici43");
-			Tree.node.add(l);
-			System.out.println("ici44");
-			 :}
+		{: Tree.node.add(l); :}
 	|
 	;
 
@@ -124,74 +116,51 @@ variable ::=
 		{: 
 			RESULT = new NodeVariable(t, name, val.getValue(), val);
 		:}
-
-
 	|type:t STRINGCONTENT:name SEMIC
 		{:
-
-
-			System.out.println("ici1000000");
 			RESULT = new NodeVariable(t, name, null, null); 
 		:}
-
-
 	|STRINGCONTENT:name EQ STRINGCONTENT:val SEMIC
 		{: 	
 			RESULT = new NodeVariable(null, name, val, null); 
 		:}
-
-
 	|STRINGCONTENT:name EQ NUMBER:val SEMIC
 		{: 	
 			RESULT = new NodeVariable(null, name, val, null); 
 		:}
-
-
 	|type:t STRINGCONTENT:name EQ TRUE:val SEMIC
 		{: 
 			RESULT = new NodeVariable(t, name, val, null);
 	    :}
-
-
 	|type:t STRINGCONTENT:name EQ FALSE:val SEMIC
 		{: 			
 			RESULT = new NodeVariable(t, name, val, null); 
 		:}
-
-
 	|type STRINGCONTENT:var EQ LPAR enumeration:val RPAR SEMIC
 		{: 
 			//RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); 
 		:}
-
-
-	|intervals SEMIC	
-
+	|intervals SEMIC
 	|array SEMIC
-
 	;
 
 
-loop ::= 
+loop ::=
+        {: parser.arrayWhile = new ArrayList<Node>(); :}
 	WHILE LPAR prop:p RPAR DO instructions OD
 		{:
-			System.out.println("empty: " + parser.arrayWhile.isEmpty());
+			//
 			RESULT = new NodeWhile(p, parser.arrayWhile);
-			System.out.println("ici");
-			//parser.arrayWhile = new ArrayList<Node>();
 		:}
 	;
 
 instructions ::=
 	variable:v instructions
-		{: 
-			System.out.println("ici42");
-			parser.arrayWhile.add(v); :}
+		{: parser.arrayWhile.add(v); :}
 	|switchCase instructions
 	|loop instructions
 	|
 	;
-
 
 switchCase ::= 
 	SWITCH case END_SWITCH
@@ -216,16 +185,6 @@ enumeration ::=
 	|COMA enumeration
 	|
 	;
-
-
-
-
-
-
-
-
-
-
 
 val ::=
 	NUMBER:val1		{: RESULT = new NodeConstant(val1, null); :}

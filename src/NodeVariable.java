@@ -17,10 +17,7 @@ public class NodeVariable implements Node{
 		return "t"+Tree.numVar;
 	}
 
-	public void lolString(){
-		System.out.println(this.type.toString() + " " + this.name + " " + this.value);
-	}
-	//build TAC, and return var name
+    //build TAC, and return var name
 	public String GetTac(){
 		//Tac tac = new Tac("", t, value, "", EnumTac.VARIABLE);
 		value = nodeValue.GetTac();
@@ -30,11 +27,7 @@ public class NodeVariable implements Node{
 	}
 
 
-	public String getT(){
-		return "phony";
-	}
-
-	public String toString()
+    public String toString()
 	{
 		if(value == null)
 			return type.toString() + " " + name;

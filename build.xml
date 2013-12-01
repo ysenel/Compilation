@@ -80,5 +80,19 @@ Lionel
 	dump_tables="false" 
 	/>
   </target>
+
+    <!-- =================================
+         target: clean
+         ================================= -->
+    <target name="clean" description="delete .class, parser and lexer">
+        <delete>
+            <fileset dir="bin/">
+                <include name="*"/>
+            </fileset>
+        </delete>
+        <delete file="src/Lexer.java"/>
+        <delete file="src/Parser.java"/>
+
+    </target>
   
 </project>
