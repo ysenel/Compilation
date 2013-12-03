@@ -21,9 +21,9 @@ public class NodeArithmetic implements Node{
 		String val = getValue();
 
 		Tree.numVar++;
-		
 		Tac tac = new Tac(type.toString(), left, right, val, EnumTac.CALC);
 		Tree.tac.add(tac);
+		
 		
 		
 		return val;

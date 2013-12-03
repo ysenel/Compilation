@@ -30,7 +30,7 @@ public class NodeVariable implements Node{
 
 
     public String toString()
-	{
+	{	
 		if(value == null && type != null)
 			return type.toString() + " " + name;
 

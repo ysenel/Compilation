@@ -32,7 +32,6 @@ public void unrecovered_syntax_error(Symbol cur_token){
 }
 
 public Tree tree = new Tree();
-public ArrayList<Node> arrayWhile = new ArrayList<Node>();
 
 :}
 
@@ -145,19 +144,31 @@ variable ::=
 	;
 
 loop ::=
-        {: parser.arrayWhile = new ArrayList<Node>(); :}
-	WHILE LPAR prop:p RPAR DO instructions OD
+	WHILE LPAR prop:p RPAR DO instructions:i OD
 		{:
-			RESULT = new NodeWhile(p, parser.arrayWhile);
+			RESULT = new NodeWhile(p, i);
 		:}
 	;
 
+
+
 instructions ::=
-	variable:v instructions
-		{: parser.arrayWhile.add(v); :}
-	|switchCase instructions
-	|loop instructions
+	variable:v instructions:i
+		{: 
+			i.add(v); 
+			RESULT = i;
+		:}
+	|switchCase:s instructions
+		//{: parser.arrayWhile.add(s); :}
+	|loop:l instructions:i
+		{:
+			i.add(l); 
+			RESULT = i;
+		:}
 	|
+		{: 
+			RESULT = new ArrayList<Node>(); 
+		:}
 	;
 
 switchCase ::= 

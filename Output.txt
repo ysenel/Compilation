@@ -1,8 +1,27 @@
 L0:
 t0 = n > l
-if t0 jmp L1:
-INTEGER __a
+if !t0 jmp L1:
+INTEGER __c
 t1 = t1
+t1 = 3 * 8
+t2 = 1 + t1
+t3 = 8 / 42
+t4 = t2 + t3
+INTEGER __d=t4
+t5 = t5
+L2:
+t5 = n > l
+if !t5 jmp L3:
+INTEGER __c
+t6 = t6
+t6 = 3 * 8
+t7 = 1 + t6
+t8 = 8 / 42
+t9 = t7 + t8
+INTEGER __d=t9
+t10 = t10
+jmp L2:
+L3:
 jmp L0:
 L1:
 

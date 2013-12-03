@@ -27,10 +27,12 @@ public class NodeWhile implements Node{
 
 		//instructions
 		String name;
+		Collections.reverse(ins);//reverse to have instruction in the right order
 		for (Node n: ins){
 			name = n.GetTac();
 			Tac tac3 = new Tac(name + " = " + n.getValue(), null, null, null, EnumTac.VARIABLE);
-			Tree.tac.add(tac3);
+			if ( n.getValue() != "")
+				Tree.tac.add(tac3);
 		}
 
 		//jmp L0
@@ -41,10 +43,10 @@ public class NodeWhile implements Node{
 		Tac tac5 = new Tac(null, L1, null, null, EnumTac.LABEL);
 		Tree.tac.add(tac5);
 
-		return new String("phony string !");
+		return new String("");
 	}
 
     public String getValue(){
-		return "phony";
+		return "";
 	}
 }

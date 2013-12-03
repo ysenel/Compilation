@@ -1,4 +1,10 @@
 WHILE(n>l)
 	DO
-		Integer a;
+		Integer c;
+		Integer d = 1+3*8+8/42;
+		WHILE(n>l)
+			DO
+				Integer c;
+				Integer d = 1+3*8+8/42;
+			OD
 	OD
