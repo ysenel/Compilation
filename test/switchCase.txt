@@ -1,20 +1,15 @@
 SWITCH 
 	CASE(n>o)
-		Integer n;
-		Integer i;
-		BigInteger t = 0;
-		WHILE(n>l)
+		BigInteger x1 = 0;
+		WHILE(n>1)
 			DO
-				Integer n;
-				Integer x;
-				SWITCH 
-					CASE(n>o)
-						Integer n;
-						Integer i;
-						BigInteger t = 0;
-				END_SWITCH
+				Integer i;
 			OD
-	CASE(n>=t)
-		BigInteger x;
-		Real a;
+		SWITCH
+			CASE(n>2)
+				Integer x1V2V2V2;
+		END_SWITCH
+		
+	CASE(n>=1)
+		BigInteger x2 = 0;
 END_SWITCH

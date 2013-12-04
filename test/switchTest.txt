@@ -1,0 +1,5 @@
+SWITCH 
+	CASE(n>l)
+		Integer i;
+
+END_SWITCH		

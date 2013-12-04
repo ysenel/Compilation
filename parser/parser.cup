@@ -32,6 +32,7 @@ public void unrecovered_syntax_error(Symbol cur_token){
 }
 
 public Tree tree = new Tree();
+public  ArrayList<Node> caseArray = new ArrayList<Node>();
 
 :}
 
@@ -51,8 +52,8 @@ terminal String STRINGCONTENT;
 
 non terminal Node begin, variable, val, expr, loop, switchCase;
 non terminal Tree begining;
-non terminal ArrayList<Node> instructions;
-non terminal enumeration, intervals, array, case;
+non terminal ArrayList<Node> instructions, cases;
+non terminal enumeration, intervals, array;
 non terminal Node prop;
 non terminal MyEnumType type;
 
@@ -158,8 +159,11 @@ instructions ::=
 			i.add(v); 
 			RESULT = i;
 		:}
-	|switchCase:s instructions
-		//{: parser.arrayWhile.add(s); :}
+	|switchCase:s instructions:i
+		{: 
+			i.add(s); 
+			RESULT = i;
+		:}
 	|loop:l instructions:i
 		{:
 			i.add(l); 
@@ -172,12 +176,21 @@ instructions ::=
 	;
 
 switchCase ::= 
-	SWITCH case END_SWITCH
+	SWITCH cases:c END_SWITCH 
+		{:
+			RESULT = new NodeSwitch(c);
+		:}
 	;
 
-case ::=
-	CASE LPAR prop RPAR instructions case
+cases ::=
+	CASE LPAR prop:p RPAR instructions:i cases:c
+		{:
+			c.add(new NodeCase(p, i));
+			RESULT = c;
+		:}
+
 	|
+		{:RESULT = new ArrayList<Node>();:}
 	;
 
 

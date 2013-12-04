@@ -53,7 +53,7 @@ public class Tac{
 				return add3 + " = "  + add1 + " " + op + " " + add2;
 
 			case JMPCOND :
-				return "if !" + add1 + " jmp " + add2;
+				return "if " + add1 + " jmp " + add2;
 
 			case JMP :
 				return "jmp " + add2;
