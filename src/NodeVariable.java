@@ -19,10 +19,11 @@ public class NodeVariable implements Node{
 
     //build TAC, and return var name
 	public String GetTac(){
+
         if (nodeValue != null)
 		    value = nodeValue.GetTac();
-        else
-            value = null;
+        /*else if(type != MyEnumType.STRING)
+            value = null;*/
 		Tac tac = new Tac(toString(), null, value, null, EnumTac.VARIABLE);
 		Tree.tac.add(tac);
 		return getValue();
@@ -31,14 +32,14 @@ public class NodeVariable implements Node{
 
     public String toString()
 	{	
-		if(value == null && type != null)
+		if(value == null && type != null){
 			return type.toString() + " " + name;
-
+		}
 		if(type == null && value != null)
-			return name + "=" + value;
+			return name + " = " + value;
 
         if(type != null && value != null)
-            return type.toString() + " " + name + "=" + value;
+            return type.toString() + " " + name + " = " + value;
 
         return "null";
 	}

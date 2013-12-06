@@ -1,0 +1,10 @@
+
+Integer a = 1;
+
+Integer p1 =-> a;
+
+Integer p2 ->;
+
+p2 =-> a;
+
+Integer b = 1 + p2-> ;

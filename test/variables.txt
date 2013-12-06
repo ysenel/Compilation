@@ -1,34 +1,28 @@
-Integer i;
-Integer j = 0;
-Integer j = i;
+Integer a;
+Integer b = 0;
 
-BigInteger t;
-BigInteger k = 0;
-BigInteger j = i;
+BigInteger c;
+BigInteger d = 0;
+BigInteger e = i;
 
-UnsignedBigInteger t;
-UnsignedBigInteger k = 0;
-UnsignedBigInteger j = i;
+UnsignedBigInteger f;
+UnsignedBigInteger g = 0;
+UnsignedBigInteger h = i;
 
 UnsignedInteger i;
 UnsignedInteger j = 0;
-UnsignedInteger j = i;
+UnsignedInteger k = i;
 
-Boolean b;
-Boolean b = T;
-Boolean b = F;
+Boolean l = T;
 
-Character c;
-Character c = 'c';
+Character m = 'c';
 
-Real r;
-Real x = 0;
+Real n = 0;
+String toto = "salut";
 
-Enumeration enum;
-Enumeration enum = (1,2,3,4);
 
-Integer t[5];
-
-[3..5];
-
-k = t;
+w = 54;
+a = 5;
+Integer a;
+ x = 3;
+ y = to;

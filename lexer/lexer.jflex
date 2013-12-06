@@ -18,6 +18,8 @@ private Symbol Symbol(int type, Object value) {
 Number = [[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
 Strings = [a-zA-Z]([a-zA-Z]|[[:digit:]])*
 
+%x comment
+%x comments
 
 %%
 
@@ -80,7 +82,18 @@ Strings = [a-zA-Z]([a-zA-Z]|[[:digit:]])*
 "OD" { return new Symbol(MySymbol.OD, yyline, yycolumn); }
 
 // comments
+"__COMMENT__"	{ yybegin(comment); }
+"__COMMENT__("	{ yybegin(comments); }
 
+
+<comment>{
+\n	{ yybegin(YYINITIAL); }
+.	{  }
+}
+<comments>{
+")"	{ yybegin(YYINITIAL); }
+.|\n	{  }
+}
 
 /* -------------------------------------------------
         Nombres

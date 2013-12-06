@@ -33,6 +33,7 @@ public void unrecovered_syntax_error(Symbol cur_token){
 
 public Tree tree = new Tree();
 public  ArrayList<Node> caseArray = new ArrayList<Node>();
+public SymboleTable symboleTable = new SymboleTable();
 
 :}
 
@@ -64,7 +65,7 @@ precedence left MINUS_U, NOT;
 start with begining;
 
 begining ::=
-	begin:b 
+	begin
 		{:
 		System.out.println(parser.tree.TacToString());
 		:}
@@ -109,37 +110,101 @@ expr ::=
     //|LPAR expr:e RPAR {: :}    
     |MINUS expr:e {: :} %prec MINUS_U 
 	|val:v {: RESULT = v; :}
+	|STRINGCONTENT:v ARROW	{: RESULT = new NodePointer(null, v, null); :}		
     ;
 
 variable ::= 
 	type:t STRINGCONTENT:name EQ expr:val SEMIC
 		{: 
-			RESULT = new NodeVariable(t, name, val.getValue(), val);
+			if(!parser.symboleTable.exist(name)){
+				parser.symboleTable.addVariable(t, name);
+				RESULT = new NodeVariable(t, name, val.getValue(), val);
+			}
+			else
+				RESULT = new NodeError(EnumTac.VAR_ALREADY_DEF, name, nameleft+1, nameright);
+
 		:}
 	|type:t STRINGCONTENT:name SEMIC
 		{:
-			RESULT = new NodeVariable(t, name, null, null); 
+			if(!parser.symboleTable.exist(name)){
+				parser.symboleTable.addVariable(t, name);
+				RESULT = new NodeVariable(t, name, null, null); 
+			}
+			else
+				RESULT = new NodeError(EnumTac.VAR_ALREADY_DEF, name, nameleft+1, nameright);
 		:}
 	|STRINGCONTENT:name EQ STRINGCONTENT:val SEMIC
-		{: 	
-			RESULT = new NodeVariable(null, name, val, null); 
+		{:	
+			if(parser.symboleTable.exist(name) && parser.symboleTable.exist(val)){
+				RESULT = new NodeVariable(null, name, val, null); 
+			}
+			else{
+				RESULT = new NodeError(EnumTac.VAR_UNDECLARED, name, nameleft+1, nameright);
+			}
 		:}
 	|STRINGCONTENT:name EQ NUMBER:val SEMIC
 		{: 	
-			RESULT = new NodeVariable(null, name, val, null); 
+			if(parser.symboleTable.exist(name)){
+				RESULT = new NodeVariable(null, name, val, null); 
+			}
+			else
+				RESULT = new NodeError(EnumTac.VAR_UNDECLARED, name, nameleft+1, nameright);
 		:}
 	|type:t STRINGCONTENT:name EQ TRUE:val SEMIC
 		{: 
-			RESULT = new NodeVariable(t, name, val, null);
+			if(!parser.symboleTable.exist(name)){
+				parser.symboleTable.addVariable(t, name);
+				RESULT = new NodeVariable(t, name, val, null);
+	    	}
+	    	else
+	    		RESULT = new NodeError(EnumTac.VAR_ALREADY_DEF, name, nameleft+1, nameright);
 	    :}
 	|type:t STRINGCONTENT:name EQ FALSE:val SEMIC
-		{: 			
-			RESULT = new NodeVariable(t, name, val, null); 
+		{: 	
+			if(!parser.symboleTable.exist(name)){
+				parser.symboleTable.addVariable(t, name);
+				RESULT = new NodeVariable(t, name, val, null);
+	    	}
+	    	else
+	    		RESULT = new NodeError(EnumTac.VAR_ALREADY_DEF, name, nameleft+1, nameright); 
 		:}
-	|type STRINGCONTENT:var EQ LPAR enumeration:val RPAR SEMIC
+	|type:t STRINGCONTENT:name EQ QUOTE STRINGCONTENT:val QUOTE SEMIC
 		{: 
-			//RESULT = new NodeAllocation(var.toString(), MyEnumType.ALLOC, val, parser.tree); 
+			if(!parser.symboleTable.exist(name)){
+				parser.symboleTable.addVariable(t, name);
+				RESULT = new NodeVariable(t, name, val, null);
+	    	}
+	    	else
+	    		RESULT = new NodeError(EnumTac.VAR_ALREADY_DEF, name, nameleft+1, nameright);
 		:}
+	|type:t STRINGCONTENT:name EQ ARROW STRINGCONTENT:val SEMIC
+		{:
+			if(!parser.symboleTable.exist(name) && parser.symboleTable.exist(val) ){
+				parser.symboleTable.addVariable(t, name);
+				RESULT = new NodePointer(t, name, val); 
+	    	}
+	    	else
+	    		RESULT = new NodeError(EnumTac.VAR_ALREADY_DEF, name, nameleft+1, nameright);
+		:}
+	|type:t STRINGCONTENT:name ARROW SEMIC
+		{:
+			if(!parser.symboleTable.exist(name)){
+				parser.symboleTable.addVariable(t, name);
+				RESULT = new NodePointer(t, name, null); 
+	    	}
+	    	else
+	    		RESULT = new NodeError(EnumTac.VAR_ALREADY_DEF, name, nameleft+1, nameright);
+		:}
+	|STRINGCONTENT:name EQ ARROW STRINGCONTENT:val SEMIC
+		{:
+			if(parser.symboleTable.exist(name)){
+				RESULT = new NodePointer(null, name, val); 
+	    	}
+	    	else
+	    		RESULT = new NodeError(EnumTac.VAR_ALREADY_DEF, name, nameleft+1, nameright);
+		:}
+	// non fait
+	|type STRINGCONTENT:var EQ LPAR enumeration:val RPAR SEMIC
 	|intervals SEMIC
 	|array SEMIC
 	;

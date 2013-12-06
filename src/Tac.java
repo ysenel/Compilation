@@ -61,6 +61,13 @@ public class Tac{
 			case LABEL :
 				return add1;
 
+			case VAR_ALREADY_DEF :
+				return "!!!!!!! Variable " + "'" + op + "'" + " already defined at line : " + add1 + " and column : " + add2 + " !!!!!!!";
+
+			case VAR_UNDECLARED :
+				return "!!!!!!! Variable " + "'" + op + "'" + " undeclared at line : " + add1 + " and column : " + add2 + " !!!!!!!"; 
+ 
+
 			default:
 				return new String("non reconnu");				
 		}
