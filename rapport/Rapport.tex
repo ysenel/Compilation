@@ -10,6 +10,7 @@
 \begin{document}
 
 \maketitle
+
 \section{Spécification du langage}
 
 
@@ -67,8 +68,11 @@
 
 \section{Choix d'implémentation}
 
+
 \subsection{Parseur}
 On utilise un parseur CUP pour parser notre grammaire.
+A chaque règle dans la grammaire on crée un noeud que l'on fait remonter.
+
 
 
 \subsection{Arbre de syntaxe abstraite}
@@ -82,6 +86,12 @@ GetTac permet de générer le code a 3 adresse.
 
 
 \subsection{Table des symboles}
+Pour éviter la déclaration multiple de variable nous avons décidé d'utiliser une table des symboles. A chaque déclaration de variable on ajoute la variable dans la table.
+S'il y a plusieurs déclaration de variable on envoie une erreur (NodeError) qui indique la ligne et la colonne de l'erreur.
+Ainsi il est impossible de déclarer une variable plusieurs fois ou d'affecter un contenue a une variable sans l'avoir déclaré avant.
+De plus cette table des symboles aurai pue nous servir a vérifier les types de variable mais par manque de temps nous n'avons pas pue effectuer cette partie.
+
+\section{Problèmes et solutions}
 
 
 \end{document}

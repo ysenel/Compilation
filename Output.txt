@@ -1,3 +1,21 @@
-Syntax error at character 3 of input
-Couldn't repair and continue parse at character 3 of input
-parse errors
+INTEGER __a
+INTEGER __b = 0
+BIGINTEGER __c
+BIGINTEGER __d = 0
+BIGINTEGER __e = i
+UBIGINTEGER __f
+UBIGINTEGER __g = 0
+UBIGINTEGER __h = i
+UINTEGER __i
+UINTEGER __j = 0
+UINTEGER __k = i
+BOOLEAN __l = T
+CHARACTER __m = c
+REAL __n = 0
+STRING __toto = salut
+!!!!!!! Variable 'w' undeclared at line : 24 and column : 0 !!!!!!!
+__a = 5
+!!!!!!! Variable 'a' already defined at line : 26 and column : 8 !!!!!!!
+!!!!!!! Variable 'x' undeclared at line : 27 and column : 1 !!!!!!!
+!!!!!!! Variable 'y' undeclared at line : 28 and column : 1 !!!!!!!
+
