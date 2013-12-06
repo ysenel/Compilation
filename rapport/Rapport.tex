@@ -1,0 +1,87 @@
+\documentclass[10pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\author{CHEMINADE Dorian \\ SENEL Yasin}
+\title{Raport du projet de compilation}
+\begin{document}
+
+\maketitle
+\section{Spécification du langage}
+
+
+\paragraph{Commentaires}
+\begin{itemize}
+\item[*--*]commentaire sur une ligne: \_\_COMMENT\_\_ <votre commentaire ici>
+\item[*--*]commentaire sur plusieurs lignes: \_\_COMMENT\_\_( <debut de votre long commentaire>\\<fin de votre long commentaire> )
+\end{itemize}
+
+\paragraph{Types Simples}
+\begin{itemize}
+\item[*--*]entier signé sur 1 octet (-128..127): Integer <name> ;
+\item[*--*]entier signé sur 2 octets (-32768..32767): BigInteger <name> ;
+\item[*--*]entier non signé sur 1 octet (0..255): UnsignedInteger <name> ;
+\item[*--*]entier signé sur 2 octets (0..65535): UnsignedBigInteger <name> ;
+\item[*--*]booléen: Boolean <name> ;
+\item[*--*]caractère (sur 4 octets): Character <name> ;
+\item[*--*]nombre réel ($1.5*10^{-45}..3.4*10^{38}$): Real <name> ;
+\item[*--*]énumération non gérée.
+	
+\end{itemize}
+
+\paragraph{Types Complexes}
+\begin{itemize}
+\item[*--*]intervalles : Non gérés
+\item[*--*]string (de (1..65535) caractères)): String <name> ;
+\item[*--*]array: Non géré
+\item[*--*]pointer: 
+	\\déclaration de pointeur: <type> <name> =-> <var>
+	\\obtenir l'adresse du pointeur: name
+	\\obtenir le contenue du pointeur: name->
+\end{itemize}
+
+\paragraph{Structure de Contrôle}
+\begin{itemize}
+\item[*--*]switch\:
+	\\SWITCH
+	\\ CASE (<condition>\_1>)
+	\\	<instructions>
+	\\...
+	\\CASE (<condition\_n>)
+	\\	<instructions>
+	\\END\_SWITCH
+\end{itemize}
+
+\paragraph{Boucles}
+\begin{itemize}
+
+\item[*--*]while:
+	\\WHILE (<condition>) DO
+		\\<instructions>
+	\\OD
+
+\end{itemize}
+
+\section{Choix d'implémentation}
+
+\subsection{Parseur}
+On utilise un parseur CUP pour parser notre grammaire.
+
+
+\subsection{Arbre de syntaxe abstraite}
+
+Nous avons utilisé un arbre de syntaxe abstraite pour produire du code 3 adresses.
+Nous avons choisie cette implémentation car elle reflète bien la structure du code source.
+On a différent type de noeud qui corresponde tous a un élément dans le programme (exemple: NodeWhile, NodeVariable, NodeArithmetic...).
+Chaque noeud implémente une interface (Node) qui nous fournit une méthode GetTac.
+GetTac permet de générer le code a 3 adresse.
+
+
+
+\subsection{Table des symboles}
+
+
+\end{document}

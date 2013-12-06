@@ -253,7 +253,6 @@ cases ::=
 			c.add(new NodeCase(p, i));
 			RESULT = c;
 		:}
-
 	|
 		{:RESULT = new ArrayList<Node>();:}
 	;

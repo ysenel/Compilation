@@ -1,5 +1,5 @@
 Integer a;
-Integer b = 0;
+Integer b = 0
 
 BigInteger c;
 BigInteger d = 0;
