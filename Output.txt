@@ -1,21 +1,24 @@
-INTEGER __a
-INTEGER __b = 0
-BIGINTEGER __c
-BIGINTEGER __d = 0
-BIGINTEGER __e = i
-UBIGINTEGER __f
-UBIGINTEGER __g = 0
-UBIGINTEGER __h = i
-UINTEGER __i
-UINTEGER __j = 0
-UINTEGER __k = i
-BOOLEAN __l = T
-CHARACTER __m = c
-REAL __n = 0
-STRING __toto = salut
-!!!!!!! Variable 'w' undeclared at line : 24 and column : 0 !!!!!!!
-__a = 5
-!!!!!!! Variable 'a' already defined at line : 26 and column : 8 !!!!!!!
-!!!!!!! Variable 'x' undeclared at line : 27 and column : 1 !!!!!!!
-!!!!!!! Variable 'y' undeclared at line : 28 and column : 1 !!!!!!!
+Syntax error at character 2 of input
+Syntax error at character 9 of input
+ligne : 6,3,	 erreur : Erreur de syntaxe 
+ligne : 2,9,	 erreur : Erreur de syntaxe 
+__c
+t0 = 3 * 8
+t1 = 1 + t0
+t2 = 8 / 42
+t3 = t1 + t2
+t3 = __d
+L0:
+t4 = n > l
+IF t4 JMP L1:
+JMP L2:
+L1:
+!!!!!!! Variable 'c' already defined at line : 7 and column : 12 !!!!!!!
+!!!!!!! Error at line : 7 and column : 12 : 'c' !!!!!!!
+error = t5
+!!!!!!! Variable 'd' already defined at line : 8 and column : 12 !!!!!!!
+!!!!!!! Error at line : 8 and column : 12 : 'd' !!!!!!!
+error = t5
+JMP L0:
+L2:
 

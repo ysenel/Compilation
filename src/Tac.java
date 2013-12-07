@@ -48,26 +48,20 @@ public class Tac{
 		switch(type){
 			case VARIABLE : 
 				return new String(this.op);
-
 			case CALC :
 				return add3 + " = "  + add1 + " " + op + " " + add2;
-
 			case JMPCOND :
-				return "if " + add1 + " jmp " + add2;
-
+				return "IF " + add1 + " JMP " + add2;
 			case JMP :
-				return "jmp " + add2;
-
+				return "JMP " + add2;
 			case LABEL :
 				return add1;
-
 			case VAR_ALREADY_DEF :
 				return "!!!!!!! Variable " + "'" + op + "'" + " already defined at line : " + add1 + " and column : " + add2 + " !!!!!!!";
-
 			case VAR_UNDECLARED :
 				return "!!!!!!! Variable " + "'" + op + "'" + " undeclared at line : " + add1 + " and column : " + add2 + " !!!!!!!"; 
- 
-
+			case OTHER_ERROR :
+				return "!!!!!!! Error at line : " + add1 + " and column : " + add2 + " : '" + op + "' !!!!!!!"; 
 			default:
 				return new String("non reconnu");				
 		}

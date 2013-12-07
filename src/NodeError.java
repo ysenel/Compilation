@@ -12,30 +12,25 @@ public class NodeError implements Node{
 		this.column = column;
 	}
 
-    public String getValue()
+    	public String getValue()
 	{
 		return "t"+Tree.numVar;
 	}
 
-    public String GetTac(){
-    	//Tac tac;
-    	if(this.type == EnumTac.VAR_ALREADY_DEF){
+	public String GetTac(){
+    		if(this.type == EnumTac.VAR_ALREADY_DEF){
 			Tac tac1 = new Tac(name, line+"", column+"", null, EnumTac.VAR_ALREADY_DEF);
 			Tree.tac.add(tac1);
-
-
 		}
-
-		else{
+		if(this.type == EnumTac.VAR_UNDECLARED){
 			Tac tac2 = new Tac(name, line+"", column+"", null, EnumTac.VAR_UNDECLARED);
 			Tree.tac.add(tac2);
-			}
-		
-		
-		
-		
+		}
+		else{//OTHER_ERROR
+			Tac tac2 = new Tac(name, line+"", column+"", null, EnumTac.OTHER_ERROR);
+			Tree.tac.add(tac2);
+		}		
 		return "error";
 	}
-	//build TAC, and return temporary variable name
 
 }

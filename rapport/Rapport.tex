@@ -72,26 +72,29 @@
 \subsection{Parseur}
 On utilise un parseur CUP pour parser notre grammaire.
 A chaque règle dans la grammaire on crée un noeud que l'on fait remonter.
-
-
+Les érreurs de syntaxe sont traitées de façon simple au niveau des premières règles de la grammaire, 
+et le parser continue l'analyse du code.
 
 \subsection{Arbre de syntaxe abstraite}
 
 Nous avons utilisé un arbre de syntaxe abstraite pour produire du code 3 adresses.
-Nous avons choisie cette implémentation car elle reflète bien la structure du code source.
+Nous avons choisie cette implémentation car elle reflète bien la structure du code source, permet de gérer les environnements et de contrôler les types.
 On a différent type de noeud qui corresponde tous a un élément dans le programme (exemple: NodeWhile, NodeVariable, NodeArithmetic...).
 Chaque noeud implémente une interface (Node) qui nous fournit une méthode GetTac.
 GetTac permet de générer le code a 3 adresse.
-
-
+Nous avons choisit cette solution plutôt que le modele Visiteur pour ne pas avoir a créer trop de sous-classes.
 
 \subsection{Table des symboles}
 Pour éviter la déclaration multiple de variable nous avons décidé d'utiliser une table des symboles. A chaque déclaration de variable on ajoute la variable dans la table.
 S'il y a plusieurs déclaration de variable on envoie une erreur (NodeError) qui indique la ligne et la colonne de l'erreur.
 Ainsi il est impossible de déclarer une variable plusieurs fois ou d'affecter un contenue a une variable sans l'avoir déclaré avant.
-De plus cette table des symboles aurai pue nous servir a vérifier les types de variable mais par manque de temps nous n'avons pas pue effectuer cette partie.
+De plus cette table des symboles aurai pu nous servir a vérifier les types de variable mais par manque de temps nous n'avons pas pu effectuer cette partie.
+Notre table de symboles ne gere pas les différents contextes du code (blocs, boucles while, ...), les variables sont toutes vues comme des variables globales.
 
 \section{Problèmes et solutions}
+
+La détection des érreurs de syntaxe de façon précise provoquait des conflits dans le parser, on a donc opté pour une solution plus generale qui ne décrit pas l'érreur rencontrée mais qui indique sont emplacement.
+Par manque de temps notre table de symboles ne gere pas les différents contextes du code (blocs, boucles while, ...), les variables sont toutes vues comme des variables globales.
 
 
 \end{document}

@@ -8,8 +8,7 @@ parser code {:
 
 public void syntax_error(String message, Object o, int line, int column){
 	String msg2 = new StringBuilder().append("ligne : ").append(line+1).append(",").append(column)
-					.append(",\t erreur : ").append(message)
-					.append("\n\t-> symbole : ").append(o).toString();
+					.append(",\t erreur : ").append(message);
 	report_error(msg2, null) ;
 }
 public void syntax_error(String message, Object o){
@@ -78,6 +77,8 @@ begin ::=
 		{: Tree.node.add(s); :}
 	|loop:l begin
 		{: Tree.node.add(l); :}
+	|error:e begin
+		{: parser.syntax_error("Erreur de syntaxe ", e, eleft+1, eright); :}
 	|
 	;
 
