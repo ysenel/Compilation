@@ -1,24 +1,92 @@
-Syntax error at character 2 of input
-Syntax error at character 9 of input
-ligne : 6,3,	 erreur : Erreur de syntaxe 
-ligne : 2,9,	 erreur : Erreur de syntaxe 
-__c
-t0 = 3 * 8
-t1 = 1 + t0
-t2 = 8 / 42
-t3 = t1 + t2
-t3 = __d
+Syntax error at character 37 of input
+Syntax error at character 38 of input
+Syntax error at character 39 of input
+ligne : 40,10,	 erreur : Erreur de syntaxe 
+ligne : 39,9,	 erreur : Erreur de syntaxe 
+ligne : 37,8,	 erreur : Erreur de syntaxe 
+__a
+0 = __b
+__a = 1
+__b = a
+a = __c
+T = __d
+je = __e
 L0:
-t4 = n > l
-IF t4 JMP L1:
+t0 = a > b
+IF t0 JMP L1:
 JMP L2:
 L1:
-!!!!!!! Variable 'c' already defined at line : 7 and column : 12 !!!!!!!
-!!!!!!! Error at line : 7 and column : 12 : 'c' !!!!!!!
-error = t5
-!!!!!!! Variable 'd' already defined at line : 8 and column : 12 !!!!!!!
-!!!!!!! Error at line : 8 and column : 12 : 'd' !!!!!!!
-error = t5
+__f
+t1 = t1
+t1 = 3 * 8
+t2 = 1 + t1
+t3 = 8 / 42
+t4 = t2 + t3
+t4 = __g
+t5 = t5
+L3:
+t5 = a > b
+IF t5 JMP L4:
+JMP L5:
+L4:
+__h
+t6 = t6
+t6 = 3 * 8
+t7 = 1 + t6
+t8 = 8 / 42
+t9 = t7 + t8
+t9 = __i
+t10 = t10
+JMP L3:
+L5:
 JMP L0:
 L2:
+t10 = a > o
+IF t10 JMP L7:
+JMP L6:
+L7:
+2 = __j
+t11 = t11
+L6:
+t11 = a => 1
+IF t11 JMP L9:
+JMP L8:
+L9:
+0 = __k
+t12 = t12
+L8:
+!!!!!!! Variable 'a' already defined at line : 34 and column : 8 !!!!!!!
+!!!!!!! Error at line : 34 and column : 8 : 'a' !!!!!!!
+__m
+!!!!!!! Variable 'n' undeclared at line : 42 and column : 0 !!!!!!!
+t12 = n > o
+IF t12 JMP L11:
+JMP L10:
+L11:
+0 = __o
+t13 = t13
+L12:
+t13 = n > 1
+IF t13 JMP L13:
+JMP L14:
+L13:
+__p
+t14 = t14
+JMP L12:
+L14:
+t14 = n > 2
+IF t14 JMP L16:
+JMP L15:
+L16:
+__q
+t15 = t15
+L15:
+L10:
+t15 = n => 1
+IF t15 JMP L18:
+JMP L17:
+L18:
+0 = __r
+t16 = t16
+L17:
 

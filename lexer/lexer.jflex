@@ -16,7 +16,7 @@ private Symbol Symbol(int type, Object value) {
 %}
 
 Number = [[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
-Strings = [a-zA-Z]([a-zA-Z]|[[:digit:]])*
+Strings = [a-zA-Z]([a-zA-Z]|[[:digit:]]|[[:space:]])*
 
 %x comment
 %x comments
